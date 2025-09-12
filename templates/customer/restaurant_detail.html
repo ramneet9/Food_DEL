@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}{{ restaurant.name }} - JustEat Technology{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Restaurant Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="display-6 fw-bold mb-2">{{ restaurant.name }}</h1>
+                            <p class="text-muted mb-3">{{ restaurant.description }}</p>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rating-stars me-3">
+                                    {% for i in range(5) %}
+                                        <i class="fas fa-star{% if i >= restaurant.rating %}-o{% endif %}"></i>
+                                    {% endfor %}
+                                    <span class="ms-2">({{ restaurant.total_reviews }} reviews)</span>
+                                </div>
+                                <span class="badge bg-secondary me-2">{{ restaurant.cuisine_type }}</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                <span class="me-4">{{ restaurant.location }}</span>
+                                <i class="fas fa-phone me-2"></i>
+                                <span>{{ restaurant.phone }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-md-end">
+                            <a href="{{ url_for('customer.restaurants') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Restaurants
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Menu Items -->
+        <div class="col-lg-8">
+            <!-- Filters -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category">
+                                <option value="">All Categories</option>
+                                {% for category in categories %}
+                                <option value="{{ category }}" {% if category_filter == category %}selected{% endif %}>
+                                    {{ category }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="cuisine" class="form-label">Cuisine</label>
+                            <select class="form-select" id="cuisine" name="cuisine">
+                                <option value="">All Cuisines</option>
+                                {% for cuisine in cuisine_types %}
+                                <option value="{{ cuisine }}" {% if cuisine_filter == cuisine %}selected{% endif %}>
+                                    {{ cuisine }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="price" class="form-label">Price Range</label>
+                            <select class="form-select" id="price" name="price">
+                                <option value="">All Prices</option>
+                                <option value="low" {% if price_filter == 'low' %}selected{% endif %}>Under $10</option>
+                                <option value="medium" {% if price_filter == 'medium' %}selected{% endif %}>$10 - $25</option>
+                                <option value="high" {% if price_filter == 'high' %}selected{% endif %}>Over $25</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="dietary" class="form-label">Dietary</label>
+                            <select class="form-select" id="dietary" name="dietary">
+                                <option value="">All Options</option>
+                                <option value="vegetarian" {% if dietary_filter == 'vegetarian' %}selected{% endif %}>Vegetarian</option>
+                                <option value="vegan" {% if dietary_filter == 'vegan' %}selected{% endif %}>Vegan</option>
+                                <option value="gluten_free" {% if dietary_filter == 'gluten_free' %}selected{% endif %}>Gluten Free</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Menu Items Grid -->
+            <div class="row g-4">
+                {% for item in menu_items %}
+                <div class="col-md-6">
+                    <div class="card menu-item-card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title mb-0">{{ item.name }}</h6>
+                                <div>
+                                    {% if item.is_special %}
+                                    <span class="badge bg-danger me-1">Special</span>
+                                    {% endif %}
+                                    {% if item.is_deal_of_day %}
+                                    <span class="badge bg-success me-1">Deal</span>
+                                    {% endif %}
+                                    {% if item.is_mostly_ordered() %}
+                                    <span class="badge bg-warning text-dark">Mostly Ordered</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <p class="card-text text-muted small mb-3">{{ item.description }}</p>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <span class="fw-bold text-primary fs-5">${{ "%.2f"|format(item.price) }}</span>
+                                    <small class="text-muted d-block">{{ item.category }}</small>
+                                </div>
+                                <div class="dietary-badges">
+                                    {% if item.is_vegetarian %}
+                                    <span class="badge bg-success me-1">Veg</span>
+                                    {% endif %}
+                                    {% if item.is_vegan %}
+                                    <span class="badge bg-info me-1">Vegan</span>
+                                    {% endif %}
+                                    {% if item.is_gluten_free %}
+                                    <span class="badge bg-warning text-dark">GF</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="input-group me-3" style="width: 120px;">
+                                    <button class="btn btn-outline-secondary btn-sm quantity-btn quantity-decrease" type="button">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" class="form-control form-control-sm text-center" 
+                                           id="quantity-{{ item.id }}" value="1" min="1" max="10">
+                                    <button class="btn btn-outline-secondary btn-sm quantity-btn quantity-increase" type="button">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                        data-menu-item-id="{{ item.id }}">
+                                    <i class="fas fa-cart-plus me-1"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- No Menu Items -->
+            {% if not menu_items %}
+            <div class="text-center py-5">
+                <i class="fas fa-utensils text-muted display-1 mb-3"></i>
+                <h3 class="text-muted">No menu items found</h3>
+                <p class="text-muted">Try adjusting your filters</p>
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Reviews -->
+            {% if reviews %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-star me-2"></i>Recent Reviews
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for review in reviews %}
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="rating-stars">
+                                {% for i in range(5) %}
+                                    <i class="fas fa-star{% if i >= review.rating %}-o{% endif %}"></i>
+                                {% endfor %}
+                            </div>
+                            <small class="text-muted">{{ review.created_at.strftime('%m/%d/%Y') }}</small>
+                        </div>
+                        <p class="small mb-1">{{ review.comment }}</p>
+                        <small class="text-muted">- {{ review.user.first_name }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- Restaurant Info -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Restaurant Info
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Cuisine Type:</strong>
+                        <span class="badge bg-secondary ms-2">{{ restaurant.cuisine_type }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Location:</strong>
+                        <p class="mb-0 text-muted">{{ restaurant.location }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Phone:</strong>
+                        <p class="mb-0 text-muted">{{ restaurant.phone }}</p>
+                    </div>
+                    {% if restaurant.email %}
+                    <div class="mb-3">
+                        <strong>Email:</strong>
+                        <p class="mb-0 text-muted">{{ restaurant.email }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-submit form when filters change
+$('.form-select').on('change', function() {
+    $(this).closest('form').submit();
+});
+</script>
+{% endblock %}

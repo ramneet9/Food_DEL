@@ -1,0 +1,379 @@
+{% extends "base.html" %}
+
+{% block title %}Home - JustEat Technology{% endblock %}
+
+{% block extra_css %}
+<style>
+/* On the landing page, let the banner image reach the very top */
+.navbar-spacer { height: 0 !important; }
+/* Ensure the banner truly spans edge-to-edge */
+.single-banner {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+@media (min-width: 576px) {
+    .single-banner { border-bottom-left-radius: 48px; border-bottom-right-radius: 48px; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Single Full-Bleed Banner -->
+<section class="single-banner" style="background-image:url('{{ IMAGE_PATHS.hero }}'); background-size:cover; background-position:center;">
+    <div class="banner-overlay"></div>
+    <div class="container banner-content py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="display-4 fw-bold mb-3">Great food, delivered fast</h1>
+                <p class="lead mb-4">Discover offers near you and order from top restaurants in your area.</p>
+                {% if not current_user.is_authenticated %}
+                <a href="#" class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Start Ordering
+                </a>
+                {% else %}
+                <a href="{{ url_for('customer.restaurants') }}" class="btn btn-light btn-lg">
+                    Start Ordering
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Offers Today Section -->
+<div class="container offers-section pt-4 pb-3">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-2 small-offers-heading">
+                <i class="fas fa-fire text-danger me-2"></i>Top Offers Today
+            </h2>
+        </div>
+    </div>
+    
+    <div class="row g-3 small-offers-row">
+        <div class="col-lg-3 col-md-6">
+            <div class="offer-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-3">
+                    <div class="offer-badge bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">50%</span>
+                    </div>
+                    <h5 class="card-title">Pizza Mania</h5>
+                    <p class="card-text text-muted small">Get 50% off on all pizzas. Valid till midnight!</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-success fw-bold">Upto ₹200 OFF</small>
+                        <small class="text-muted">PIZZA50</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="offer-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-3">
+                    <div class="offer-badge bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">30%</span>
+                    </div>
+                    <h5 class="card-title">Biryani Special</h5>
+                    <p class="card-text text-muted small">Authentic biryani with 30% discount. Limited time offer!</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-success fw-bold">Upto ₹150 OFF</small>
+                        <small class="text-muted">BIRYANI30</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="offer-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-3">
+                    <div class="offer-badge bg-warning text-dark rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">40%</span>
+                    </div>
+                    <h5 class="card-title">Healthy Bowls</h5>
+                    <p class="card-text text-muted small">Nutritious bowls at amazing prices. Eat healthy, save more!</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-success fw-bold">Upto ₹100 OFF</small>
+                        <small class="text-muted">HEALTHY40</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="offer-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-3">
+                    <div class="offer-badge bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">25%</span>
+                    </div>
+                    <h5 class="card-title">Sushi Delight</h5>
+                    <p class="card-text text-muted small">Fresh sushi with 25% off. Premium quality at great prices!</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-success fw-bold">Upto ₹120 OFF</small>
+                        <small class="text-muted">SUSHI25</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- What's on your mind Section -->
+<div class="container offers-section pt-4 pb-3">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="fw-bold mb-3 small-offers-heading">
+                <i class="fas fa-brain text-primary me-2"></i>What's on your mind?
+            </h2>
+        </div>
+    </div>
+    
+    <div class="food-categories-wrap">
+        <div id="foodTrack" class="food-categories-track">
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.pizza }}" alt="Pizza">
+                <div class="label">Pizza</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.biryani }}" alt="Biryani">
+                <div class="label">Biryani</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.daily_meal }}" alt="Daily Meal">
+                <div class="label">Daily Meal</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.bowl }}" alt="Bowl">
+                <div class="label">Bowl</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.thali }}" alt="Thali">
+                <div class="label">Thali</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.thin_crust }}" alt="Thin Crust">
+                <div class="label">Thin Crust</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.rolls }}" alt="Rolls">
+                <div class="label">Rolls</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.light_meal }}" alt="Light Meal">
+                <div class="label">Light Meal</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.high_protein }}" alt="High Protein">
+                <div class="label">High Protein</div>
+            </div>
+            <div class="food-chip">
+                <img src="{{ IMAGE_PATHS.foods.sandwich }}" alt="Sandwich">
+                <div class="label">Sandwich</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Deal of the Day Section -->
+{# Deal of the Day section removed as requested #}
+
+<!-- Featured Restaurants Section -->
+{% if featured_restaurants %}
+<div class="py-4 restaurants-bg" style="background-image:url('{{ IMAGE_PATHS.featured_bg }}'); background-size:cover; background-position:center;">
+    <div class="container pb-0 mb-0">
+        <div class="row mb-2">
+            <div class="col-12">
+                <h2 class="display-6 fw-bold text-center text-white">
+                    <i class="fas fa-store me-2"></i>Featured Restaurants
+                </h2>
+            </div>
+        </div>
+        
+        <div class="resto-fullbleed">
+            <button class="scroll-btn left" data-target="#restoTrack"><i class="fas fa-chevron-left"></i></button>
+            <div id="restoTrack" class="resto-cards-track d-flex overflow-auto pb-2">
+            {% for restaurant in featured_restaurants %}
+            <div class="resto-card-item me-3" style="min-width: 260px;">
+                {% if not current_user.is_authenticated %}
+                <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-decoration-none text-reset">
+                {% endif %}
+                <div class="restaurant-showcase-card card border-0 shadow-sm h-100">
+                    <!-- Restaurant Photo -->
+                    <div class="restaurant-photo position-relative" style="height: 160px; background-image: url('{{ restaurant_image(restaurant.name) }}'); background-size: cover; background-position: center;">
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="badge bg-success">Open</span>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 m-3">
+                            <small class="text-white">
+                                <i class="fas fa-clock me-1"></i>25-30 mins
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-3">
+                        <!-- Restaurant Logo -->
+                        <div class="restaurant-logo-container text-center mb-3">
+                            <div class="restaurant-logo mx-auto d-flex align-items-center justify-content-center" 
+                                 style="width: 48px; height: 48px; background: linear-gradient(45deg, #ff6b6b, #feca57); border-radius: 50%;">
+                                <span class="text-white fw-bold fs-4">{{ restaurant.name[0] }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Restaurant Info -->
+                        <div class="text-center mb-3">
+                            <h5 class="card-title mb-1">{{ restaurant.name }}</h5>
+                            <p class="text-muted small mb-2">{{ restaurant.cuisine_type }} • {{ restaurant.location }}</p>
+                            
+                            <!-- Rating -->
+                            <div class="d-flex justify-content-center align-items-center mb-3">
+                                <div class="text-warning me-2">
+                                    {% for i in range(5) %}
+                                        <i class="fas fa-star{% if i >= restaurant.rating %}-o{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                                <small class="text-muted">({{ restaurant.total_reviews }} reviews)</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Tags -->
+                        <div class="restaurant-tags text-center mb-3">
+                            {% if restaurant.cuisine_type == 'Italian' %}
+                                <span class="badge bg-primary me-1">Gourmet</span>
+                                <span class="badge bg-success me-1">Veg</span>
+                                <span class="badge bg-info me-1">Non-Veg</span>
+                            {% elif restaurant.cuisine_type == 'Indian' %}
+                                <span class="badge bg-warning text-dark me-1">Spicy</span>
+                                <span class="badge bg-success me-1">Veg</span>
+                                <span class="badge bg-info me-1">Non-Veg</span>
+                            {% elif restaurant.cuisine_type == 'Vegetarian' %}
+                                <span class="badge bg-success me-1">Veg</span>
+                                <span class="badge bg-info me-1">Vegan</span>
+                                <span class="badge bg-warning text-dark me-1">Gluten Free</span>
+                            {% elif restaurant.cuisine_type == 'Japanese' %}
+                                <span class="badge bg-primary me-1">Gourmet</span>
+                                <span class="badge bg-info me-1">Fresh</span>
+                                <span class="badge bg-warning text-dark me-1">High Protein</span>
+                            {% else %}
+                                <span class="badge bg-secondary me-1">Popular</span>
+                                <span class="badge bg-success me-1">Veg</span>
+                                <span class="badge bg-info me-1">Non-Veg</span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Action Button -->
+                        <div class="text-center">
+                            {% if current_user.is_authenticated and current_user.is_customer() %}
+                            <a href="{{ url_for('customer.restaurant_detail', restaurant_id=restaurant.id) }}" 
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-utensils me-1"></i>View Menu
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if not current_user.is_authenticated %}
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+            </div>
+            <button class="scroll-btn right" data-target="#restoTrack"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        
+        {% if current_user.is_authenticated and current_user.is_customer() %}
+        <div class="text-center mt-4">
+            <a href="{{ url_for('customer.restaurants') }}" class="btn btn-outline-primary btn-lg">
+                View All Restaurants
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{# Removed inline CTA; moved to footer bar #}
+
+<!-- Location Modal -->
+<div class="modal fade" id="locationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-map-marker-alt me-2"></i>Select Your Location
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-4">Choose your delivery location to see restaurants and food available in your area.</p>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action location-option-modal" data-location="North Delhi">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">North Delhi</h6>
+                            <small class="text-muted">Available</small>
+                        </div>
+                        <p class="mb-1">Delhi University, Civil Lines, Model Town</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action location-option-modal" data-location="West Delhi">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">West Delhi</h6>
+                            <small class="text-muted">Available</small>
+                        </div>
+                        <p class="mb-1">Rajouri Garden, Janakpuri, Dwarka</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action location-option-modal" data-location="East Delhi">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">East Delhi</h6>
+                            <small class="text-muted">Available</small>
+                        </div>
+                        <p class="mb-1">Laxmi Nagar, Preet Vihar, Mayur Vihar</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action location-option-modal" data-location="South Delhi">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">South Delhi</h6>
+                            <small class="text-muted">Available</small>
+                        </div>
+                        <p class="mb-1">Saket, Malviya Nagar, Hauz Khas</p>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action location-option-modal" data-location="Central Delhi">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">Central Delhi</h6>
+                            <small class="text-muted">Available</small>
+                        </div>
+                        <p class="mb-1">Connaught Place, Karol Bagh, Paharganj</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Handle location selection from modal
+$('.location-option-modal').on('click', function(e) {
+    e.preventDefault();
+    const location = $(this).data('location');
+    
+    // Update both navbar and hero location
+    $('#selected-location').text(location);
+    $('#hero-location').text(location);
+    
+    // Store location in localStorage
+    localStorage.setItem('selectedLocation', location);
+    
+    // Show toast notification
+    showToast('success', `Location changed to ${location}`);
+    
+    // Close modal
+    $('#locationModal').modal('hide');
+});
+
+// Update hero location when page loads
+$(document).ready(function() {
+    const savedLocation = localStorage.getItem('selectedLocation');
+    if (savedLocation) {
+        $('#hero-location').text(savedLocation);
+    }
+});
+</script>
+{% endblock %}

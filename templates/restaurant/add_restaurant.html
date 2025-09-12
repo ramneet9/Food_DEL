@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Add Restaurant - JustEat Technology{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-plus text-success me-2"></i>Add New Restaurant
+            </h1>
+            <p class="lead text-muted">Register your restaurant on our platform</p>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Restaurant Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" 
+                                       placeholder="Enter restaurant name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cuisine_type" class="form-label">Cuisine Type *</label>
+                                <select class="form-select" id="cuisine_type" name="cuisine_type" required>
+                                    <option value="">Select cuisine type</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Japanese">Japanese</option>
+                                    <option value="American">American</option>
+                                    <option value="Mexican">Mexican</option>
+                                    <option value="Thai">Thai</option>
+                                    <option value="Vegetarian">Vegetarian</option>
+                                    <option value="Mediterranean">Mediterranean</option>
+                                    <option value="French">French</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" name="description" 
+                                          rows="3" placeholder="Describe your restaurant..."></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location *</label>
+                                <input type="text" class="form-control" id="location" name="location" 
+                                       placeholder="Enter location" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       placeholder="Enter phone number">
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="Enter email address">
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ url_for('restaurant.restaurants') }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-arrow-left me-2"></i>Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save me-2"></i>Add Restaurant
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

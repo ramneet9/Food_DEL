@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Restaurants - JustEat Technology{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-store text-primary me-2"></i>Restaurants
+            </h1>
+            <p class="lead text-muted">Discover amazing restaurants and cuisines</p>
+        </div>
+    </div>
+    
+    <!-- Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="GET" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="search" class="form-label">Search</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   placeholder="Restaurant name..." value="{{ search }}">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="cuisine" class="form-label">Cuisine Type</label>
+                            <select class="form-select" id="cuisine" name="cuisine">
+                                <option value="">All Cuisines</option>
+                                {% for cuisine in cuisine_types %}
+                                <option value="{{ cuisine }}" {% if cuisine_filter == cuisine %}selected{% endif %}>
+                                    {{ cuisine }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" 
+                                   placeholder="Location..." value="{{ location_filter }}">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search me-1"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Restaurants Grid -->
+    <div class="row g-4">
+        {% for restaurant in restaurants.items %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card restaurant-card h-100 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <h5 class="card-title mb-0">{{ restaurant.name }}</h5>
+                        <span class="badge bg-secondary">{{ restaurant.cuisine_type }}</span>
+                    </div>
+                    
+                    <p class="card-text text-muted mb-3">
+                        {{ restaurant.description[:100] }}{% if restaurant.description|length > 100 %}...{% endif %}
+                    </p>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="rating-stars">
+                            {% for i in range(5) %}
+                                <i class="fas fa-star{% if i >= restaurant.rating %}-o{% endif %}"></i>
+                            {% endfor %}
+                            <small class="text-muted ms-1">({{ restaurant.total_reviews }})</small>
+                        </div>
+                        <small class="text-muted">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ restaurant.location }}
+                        </small>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="fas fa-phone me-1"></i>{{ restaurant.phone }}
+                        </small>
+                        <a href="{{ url_for('customer.restaurant_detail', restaurant_id=restaurant.id) }}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="fas fa-utensils me-1"></i>View Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if restaurants.pages > 1 %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <nav aria-label="Restaurants pagination">
+                <ul class="pagination justify-content-center">
+                    {% if restaurants.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('customer.restaurants', page=restaurants.prev_num, search=search, cuisine=cuisine_filter, location=location_filter) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in restaurants.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != restaurants.page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('customer.restaurants', page=page_num, search=search, cuisine=cuisine_filter, location=location_filter) }}">
+                                    {{ page_num }}
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page_num }}</span>
+                            </li>
+                            {% endif %}
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if restaurants.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('customer.restaurants', page=restaurants.next_num, search=search, cuisine=cuisine_filter, location=location_filter) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- No Results -->
+    {% if not restaurants.items %}
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <i class="fas fa-search text-muted display-1 mb-3"></i>
+                <h3 class="text-muted">No restaurants found</h3>
+                <p class="text-muted">Try adjusting your search criteria</p>
+                <a href="{{ url_for('customer.restaurants') }}" class="btn btn-primary">
+                    <i class="fas fa-refresh me-2"></i>Clear Filters
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

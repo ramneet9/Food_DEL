@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - JustEat Technology{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5 fw-bold">
+                <i class="fas fa-user-edit text-primary me-2"></i>My Profile
+            </h1>
+            <p class="lead text-muted">Manage your account information and preferences</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Profile Information -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user me-2"></i>Personal Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="update-profile-form">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label">First Name *</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" 
+                                       value="{{ current_user.first_name }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label">Last Name *</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" 
+                                       value="{{ current_user.last_name }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       value="{{ current_user.email }}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" 
+                                       value="{{ current_user.phone or '' }}">
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3">{{ current_user.address or '' }}</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>Update Profile
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Preferences -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-heart me-2"></i>Preferences
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if preferences %}
+                        {% for preference in preferences %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <strong>{{ preference.preference_type.replace('_', ' ').title() }}</strong>
+                                <br>
+                                <small class="text-muted">{{ preference.preference_value }}</small>
+                            </div>
+                            <button class="btn btn-sm btn-outline-danger" onclick="removePreference({{ preference.id }})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">No preferences set yet.</p>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <h6>Add New Preference</h6>
+                    <form id="add-preference-form">
+                        <div class="mb-3">
+                            <label for="preference_type" class="form-label">Type</label>
+                            <select class="form-select" id="preference_type" name="preference_type" required>
+                                <option value="">Select type</option>
+                                <option value="favorite_cuisine">Favorite Cuisine</option>
+                                <option value="favorite_restaurant">Favorite Restaurant</option>
+                                <option value="dietary_restriction">Dietary Restriction</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="preference_value" class="form-label">Value</label>
+                            <input type="text" class="form-control" id="preference_value" name="preference_value" 
+                                   placeholder="Enter preference value" required>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-plus me-1"></i>Add Preference
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Account Information -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Account Info
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Username:</strong>
+                        <p class="text-muted mb-0">{{ current_user.username }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Member Since:</strong>
+                        <p class="text-muted mb-0">{{ current_user.created_at.strftime('%B %d, %Y') }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Account Type:</strong>
+                        <p class="text-muted mb-0">{{ current_user.role.title() }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add preference functionality
+$('#add-preference-form').on('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    $.ajax({
+        url: '/customer/add-preference',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(response) {
+            if (response.success) {
+                showToast('success', response.message);
+                location.reload();
+            } else {
+                showToast('error', response.message);
+            }
+        },
+        error: function() {
+            showToast('error', 'An error occurred while adding preference');
+        }
+    });
+});
+
+function removePreference(preferenceId) {
+    if (confirm('Are you sure you want to remove this preference?')) {
+        $.ajax({
+            url: '/customer/remove-preference',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ preference_id: preferenceId }),
+            success: function(response) {
+                if (response.success) {
+                    showToast('success', response.message);
+                    location.reload();
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', 'An error occurred while removing preference');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

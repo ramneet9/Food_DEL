@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - JustEat Technology{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="bg-primary text-white rounded p-4">
+                <h2 class="mb-2">Welcome back, {{ current_user.first_name }}!</h2>
+                <p class="mb-0">Ready to discover amazing food? Let's get started!</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-shopping-cart text-primary display-4 mb-3"></i>
+                    <h5 class="card-title">Cart Items</h5>
+                    <h3 class="text-primary">{{ cart_count }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-receipt text-success display-4 mb-3"></i>
+                    <h5 class="card-title">Total Orders</h5>
+                    <h3 class="text-success">{{ recent_orders|length }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-star text-warning display-4 mb-3"></i>
+                    <h5 class="card-title">Reviews Given</h5>
+                    <h3 class="text-warning">0</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-heart text-danger display-4 mb-3"></i>
+                    <h5 class="card-title">Favorites</h5>
+                    <h3 class="text-danger">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Recent Orders -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>Recent Orders
+                        </h5>
+                        <a href="{{ url_for('customer.orders') }}" class="btn btn-outline-primary btn-sm">
+                            View All
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if recent_orders %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Restaurant</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in recent_orders %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('customer.orders') }}?search={{ order.order_number }}" 
+                                               class="text-decoration-none">
+                                                {{ order.order_number }}
+                                            </a>
+                                        </td>
+                                        <td>{{ order.restaurant.name }}</td>
+                                        <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ 'success' if order.status == 'delivered' else 'warning' if order.status == 'pending' else 'info' }}">
+                                                {{ order.status.title() }}
+                                            </span>
+                                        </td>
+                                        <td>{{ order.created_at.strftime('%m/%d/%Y') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-receipt text-muted display-4 mb-3"></i>
+                            <h5 class="text-muted">No orders yet</h5>
+                            <p class="text-muted">Start exploring restaurants and place your first order!</p>
+                            <a href="{{ url_for('customer.restaurants') }}" class="btn btn-primary">
+                                <i class="fas fa-store me-2"></i>Browse Restaurants
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendations -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-lightbulb me-2"></i>Recommended for You
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recommendations %}
+                        {% for item in recommendations %}
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-utensils text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">{{ item.name }}</h6>
+                                <p class="text-muted small mb-1">{{ item.restaurant.name }}</p>
+                                <span class="text-primary fw-bold">${{ "%.2f"|format(item.price) }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="text-center mt-3">
+                            <a href="{{ url_for('customer.restaurants') }}" class="btn btn-outline-primary btn-sm">
+                                View More
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="fas fa-lightbulb text-muted mb-2"></i>
+                            <p class="text-muted small">Complete your profile to get personalized recommendations!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('customer.restaurants') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-store me-2"></i>Browse Restaurants
+                        </a>
+                        <a href="{{ url_for('customer.cart') }}" class="btn btn-outline-success">
+                            <i class="fas fa-shopping-cart me-2"></i>View Cart
+                        </a>
+                        <a href="{{ url_for('customer.profile') }}" class="btn btn-outline-info">
+                            <i class="fas fa-user-edit me-2"></i>Update Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

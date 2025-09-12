@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Login - JustEat Technology{% endblock %}
+
+{% block extra_css %}
+<style>
+.auth-hero {
+    background-image: url('{{ url_for('static', filename='images/header-bg.jpg') }}');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    position: relative;
+    width: 100vw;               /* span full width */
+    margin-left: 50%;           /* center full-bleed */
+    transform: translateX(-50%);
+}
+.auth-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+}
+.auth-hero .auth-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Remove global navbar spacer and navbar margins on login page */
+.navbar-spacer { height: 0 !important; }
+.site-navbar { margin: 0 !important; width: 100% !important; border-radius: 0 !important; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-hero d-flex align-items-center">
+  <div class="container-fluid auth-content px-3 px-md-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-lg border-0 mt-5">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-utensils text-primary display-4 mb-3"></i>
+                        <h2 class="fw-bold">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your account</p>
+                    </div>
+                    
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       placeholder="Enter your username" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="fas fa-lock"></i>
+                                </span>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('auth.reset_password') }}" class="text-decoration-none">
+                            <i class="fas fa-key me-1"></i>Forgot Password?
+                        </a>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <h6 class="text-muted mb-3">Demo Accounts</h6>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <button class="btn btn-outline-primary btn-sm w-100" onclick="fillDemo('customer')">
+                                    <i class="fas fa-user me-1"></i>Customer
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-success btn-sm w-100" onclick="fillDemo('restaurant')">
+                                    <i class="fas fa-store me-1"></i>Restaurant
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function fillDemo(type) {
+    if (type === 'customer') {
+        document.getElementById('username').value = 'john_doe';
+        document.getElementById('password').value = 'password123';
+    } else if (type === 'restaurant') {
+        document.getElementById('username').value = 'chef_mario';
+        document.getElementById('password').value = 'password123';
+    }
+}
+</script>
+{% endblock %}
