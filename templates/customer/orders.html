@@ -2,13 +2,48 @@
 
 {% block title %}Order History - JustEat Technology{% endblock %}
 
+{% block extra_css %}
+<style>
+.page-background {
+    position: relative;
+    margin: -20px -15px 0 -15px;
+    padding: 20px 15px 0 15px;
+    min-height: 100vh;
+}
+
+.page-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 1;
+}
+
+.page-background .container {
+    position: relative;
+    z-index: 2;
+}
+
+.page-background .card {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
 {% block content %}
+<div class="page-background" style="background-image: url('{{ url_for('static', filename='images/header-bg.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
 <div class="container py-4">
     <!-- Header -->
     <div class="row mb-4">
         <div class="col-12">
             <h1 class="display-5 fw-bold">
-                <i class="fas fa-receipt text-primary me-2"></i>Order History
+                <i class="fas fa-receipt me-2" style="color: #85AA4A;"></i>Order History
             </h1>
             <p class="lead text-muted">Track your orders and view order details</p>
         </div>
@@ -40,7 +75,7 @@
                         <div class="col-md-2">
                             <label class="form-label">&nbsp;</label>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn" style="background-color: #85AA4A; border-color: #85AA4A; color: white;">
                                     <i class="fas fa-search me-1"></i>Search
                                 </button>
                             </div>
@@ -72,10 +107,10 @@
                             </span>
                         </div>
                         <div class="col-md-2">
-                            <strong class="text-primary">${{ "%.2f"|format(order.total_amount) }}</strong>
+                            <strong style="color: #85AA4A;">₹{{ "%.2f"|format(order.total_amount) }}</strong>
                         </div>
                         <div class="col-md-3 text-end">
-                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" 
+                            <button class="btn btn-sm" data-bs-toggle="collapse" style="border-color: #85AA4A; color: #85AA4A;" 
                                     data-bs-target="#order-{{ order.id }}" aria-expanded="false">
                                 <i class="fas fa-eye me-1"></i>View Details
                             </button>
@@ -101,8 +136,8 @@
                                     <tr>
                                         <td>{{ item.menu_item.name }}</td>
                                         <td>{{ item.quantity }}</td>
-                                        <td>${{ "%.2f"|format(item.price) }}</td>
-                                        <td>${{ "%.2f"|format(item.quantity * item.price) }}</td>
+                                        <td>₹{{ "%.2f"|format(item.price) }}</td>
+                                        <td>₹{{ "%.2f"|format(item.quantity * item.price) }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -176,12 +211,13 @@
                 <i class="fas fa-receipt text-muted display-1 mb-3"></i>
                 <h3 class="text-muted">No orders found</h3>
                 <p class="text-muted">You haven't placed any orders yet or no orders match your search criteria.</p>
-                <a href="{{ url_for('customer.restaurants') }}" class="btn btn-primary">
+                <a href="{{ url_for('customer.restaurants') }}" class="btn" style="background-color: #85AA4A; border-color: #85AA4A; color: white;">
                     <i class="fas fa-store me-2"></i>Browse Restaurants
                 </a>
             </div>
         </div>
     </div>
     {% endif %}
+</div>
 </div>
 {% endblock %}

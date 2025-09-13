@@ -634,4 +634,17 @@ def seed_reviews():
         db.session.add(review)
     
     db.session.commit()
+    
+    # Update restaurant ratings and total_reviews
+    restaurants = Restaurant.query.all()
+    for restaurant in restaurants:
+        reviews = Review.query.filter_by(restaurant_id=restaurant.id).all()
+        if reviews:
+            restaurant.total_reviews = len(reviews)
+            restaurant.rating = sum(review.rating for review in reviews) / len(reviews)
+        else:
+            restaurant.total_reviews = 0
+            restaurant.rating = 0.0
+    
+    db.session.commit()
     print("Reviews seeded successfully!")

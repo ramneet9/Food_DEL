@@ -2,27 +2,86 @@
 
 {% block title %}{{ restaurant.name }} - JustEat Technology{% endblock %}
 
+{% block extra_css %}
+<style>
+.page-background {
+    position: relative;
+    min-height: 100vh;
+    background-image: url('{{ url_for('static', filename='images/header-bg.jpg') }}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: -20px -15px;
+    padding: 20px 15px;
+}
+
+.page-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 1;
+}
+
+.page-background .container {
+    position: relative;
+    z-index: 2;
+}
+
+.page-background .card {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="container py-4">
+<div class="page-background">
+    <div class="container py-4">
+    <!-- Restaurant Image Mapping -->
+    {% set image_map = {
+        "Mario's Italian Bistro": "marrio.jpg",
+        "Spice Palace": "spice.jpg",
+        "Dragon Wok": "dragon.jpeg",
+        "Green Leaf Cafe": "green.jpg",
+        "Burger Junction": "burger.jpg",
+        "Sushi Zen": "sushi.jpeg",
+        "Taco Fiesta": "taco.jpg",
+        "Bakery Corner": "bakery.jpg"
+    } %}
+    {% set restaurant_image = image_map.get(restaurant.name, "bakery.jpg") %}
+    
     <!-- Restaurant Header -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <div class="row align-items-center">
+            <div class="card border-0 shadow-sm overflow-hidden" style="position: relative; min-height: 200px;">
+                <!-- Background Image -->
+                <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ url_for('static', filename='images/restaurants/' + restaurant_image) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
+                
+                <!-- Gradient Overlay -->
+                <div class="restaurant-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%); z-index: 2;"></div>
+                
+                <!-- Content -->
+                <div class="card-body d-flex align-items-center" style="position: relative; z-index: 3; color: white; min-height: 200px;">
+                    <div class="row align-items-center w-100">
                         <div class="col-md-8">
-                            <h1 class="display-6 fw-bold mb-2">{{ restaurant.name }}</h1>
-                            <p class="text-muted mb-3">{{ restaurant.description }}</p>
+                            <h1 class="display-6 fw-bold mb-2 text-white">{{ restaurant.name }}</h1>
+                            <p class="mb-3" style="color: rgba(255,255,255,0.9);">{{ restaurant.description }}</p>
                             <div class="d-flex align-items-center mb-3">
-                                <div class="rating-stars me-3">
+                                <div class="rating-stars me-3" style="color: #ffc107;">
                                     {% for i in range(5) %}
                                         <i class="fas fa-star{% if i >= restaurant.rating %}-o{% endif %}"></i>
                                     {% endfor %}
-                                    <span class="ms-2">({{ restaurant.total_reviews }} reviews)</span>
+                                    <span class="ms-2" style="color: rgba(255,255,255,0.8);">({{ restaurant.total_reviews }} reviews)</span>
                                 </div>
-                                <span class="badge bg-secondary me-2">{{ restaurant.cuisine_type }}</span>
+                                <span class="badge me-2" style="background-color: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">{{ restaurant.cuisine_type }}</span>
                             </div>
-                            <div class="d-flex align-items-center text-muted">
+                            <div class="d-flex align-items-center" style="color: rgba(255,255,255,0.8);">
                                 <i class="fas fa-map-marker-alt me-2"></i>
                                 <span class="me-4">{{ restaurant.location }}</span>
                                 <i class="fas fa-phone me-2"></i>
@@ -30,7 +89,7 @@
                             </div>
                         </div>
                         <div class="col-md-4 text-md-end">
-                            <a href="{{ url_for('customer.restaurants') }}" class="btn btn-outline-primary">
+                            <a href="{{ url_for('customer.restaurants') }}" class="btn" style="background-color: #85AA4A; border-color: #85AA4A; color: white; box-shadow: 0 4px 15px rgba(133, 170, 74, 0.3);">
                                 <i class="fas fa-arrow-left me-2"></i>Back to Restaurants
                             </a>
                         </div>
@@ -73,9 +132,9 @@
                             <label for="price" class="form-label">Price Range</label>
                             <select class="form-select" id="price" name="price">
                                 <option value="">All Prices</option>
-                                <option value="low" {% if price_filter == 'low' %}selected{% endif %}>Under $10</option>
-                                <option value="medium" {% if price_filter == 'medium' %}selected{% endif %}>$10 - $25</option>
-                                <option value="high" {% if price_filter == 'high' %}selected{% endif %}>Over $25</option>
+                                <option value="low" {% if price_filter == 'low' %}selected{% endif %}>Under ₹500</option>
+                                <option value="medium" {% if price_filter == 'medium' %}selected{% endif %}>₹500 - ₹1000</option>
+                                <option value="high" {% if price_filter == 'high' %}selected{% endif %}>Over ₹1000</option>
                             </select>
                         </div>
                         <div class="col-md-3">
@@ -116,7 +175,7 @@
                             
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
-                                    <span class="fw-bold text-primary fs-5">${{ "%.2f"|format(item.price) }}</span>
+                                    <span class="fw-bold fs-5" style="color: #85AA4A;">₹{{ "%.2f"|format(item.price) }}</span>
                                     <small class="text-muted d-block">{{ item.category }}</small>
                                 </div>
                                 <div class="dietary-badges">
@@ -143,8 +202,9 @@
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
-                                <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                        data-menu-item-id="{{ item.id }}">
+                                <button class="btn btn-sm add-to-cart-btn" 
+                                        data-menu-item-id="{{ item.id }}"
+                                        style="background-color: #85AA4A; border-color: #85AA4A; color: white;">
                                     <i class="fas fa-cart-plus me-1"></i>Add to Cart
                                 </button>
                             </div>
@@ -171,7 +231,7 @@
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white border-0">
                     <h5 class="mb-0">
-                        <i class="fas fa-star me-2"></i>Recent Reviews
+                        <i class="fas fa-star me-2" style="color: #85AA4A;"></i>Recent Reviews
                     </h5>
                 </div>
                 <div class="card-body">
@@ -197,7 +257,7 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0">
                     <h5 class="mb-0">
-                        <i class="fas fa-info-circle me-2"></i>Restaurant Info
+                        <i class="fas fa-info-circle me-2" style="color: #85AA4A;"></i>Restaurant Info
                     </h5>
                 </div>
                 <div class="card-body">
@@ -222,6 +282,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 {% endblock %}

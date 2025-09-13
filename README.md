@@ -2,6 +2,26 @@
 
 A comprehensive food ordering web application built with Flask, featuring role-based authentication for customers and restaurant owners.
 
+## 🚀 Quick Setup
+
+### For New Devices:
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Run setup script
+python setup.py
+
+# 3. Start the application
+python app.py
+```
+
+**Demo Accounts:**
+- **Customer:** `john_doe` / `password123`
+- **Restaurant Owner:** `chef_mario` / `password123`
+
+For detailed setup instructions, see [SETUP.md](SETUP.md)
+
 ## Features
 
 ### Common Functionality

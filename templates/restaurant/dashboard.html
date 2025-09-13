@@ -2,54 +2,49 @@
 
 {% block title %}Restaurant Dashboard - JustEat Technology{% endblock %}
 
+{% block extra_css %}
+<style>
+.page-background {
+    position: relative;
+    margin: -20px -15px 0 -15px;
+    padding: 20px 15px 0 15px;
+    min-height: 100vh;
+}
+
+.page-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.page-background .container {
+    position: relative;
+    z-index: 2;
+}
+
+.page-background .card {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
+
 {% block content %}
+<div class="page-background" style="background-image: url('{{ url_for('static', filename='images/header-bg.jpg') }}'); background-size: cover; background-position: center; background-attachment: fixed;">
 <div class="container py-4">
     <!-- Welcome Section -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="bg-success text-white rounded p-4">
+            <div class="text-white rounded p-4" style="background-color: #85AA4A;">
                 <h2 class="mb-2">Welcome back, {{ current_user.first_name }}!</h2>
                 <p class="mb-0">Manage your restaurants and orders efficiently</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Quick Stats -->
-    <div class="row g-4 mb-5">
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-store text-primary display-4 mb-3"></i>
-                    <h5 class="card-title">Restaurants</h5>
-                    <h3 class="text-primary">{{ restaurants|length }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-receipt text-success display-4 mb-3"></i>
-                    <h5 class="card-title">Total Orders</h5>
-                    <h3 class="text-success">{{ total_orders }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-clock text-warning display-4 mb-3"></i>
-                    <h5 class="card-title">Pending Orders</h5>
-                    <h3 class="text-warning">{{ pending_orders }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-star text-info display-4 mb-3"></i>
-                    <h5 class="card-title">Average Rating</h5>
-                    <h3 class="text-info">4.2</h3>
-                </div>
             </div>
         </div>
     </div>
@@ -57,13 +52,13 @@
     <div class="row">
         <!-- Recent Orders -->
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white border-0">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">
                             <i class="fas fa-clock me-2"></i>Recent Orders
                         </h5>
-                        <a href="{{ url_for('restaurant.orders') }}" class="btn btn-outline-primary btn-sm">
+                        <a href="{{ url_for('restaurant.orders') }}" class="btn btn-sm" style="border-color: #85AA4A; color: #85AA4A;">
                             View All
                         </a>
                     </div>
@@ -88,13 +83,13 @@
                                     <tr>
                                         <td>
                                             <a href="{{ url_for('restaurant.orders') }}?search={{ order.order_number }}" 
-                                               class="text-decoration-none">
+                                               class="text-decoration-none" style="color: #85AA4A;">
                                                 {{ order.order_number }}
                                             </a>
                                         </td>
                                         <td>{{ order.restaurant.name }}</td>
                                         <td>{{ order.customer.first_name }} {{ order.customer.last_name }}</td>
-                                        <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                                        <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
                                         <td>
                                             <select class="form-select form-select-sm update-order-status" 
                                                     data-order-id="{{ order.id }}">
@@ -127,33 +122,9 @@
                     {% endif %}
                 </div>
             </div>
-        </div>
-        
-        <!-- Quick Actions -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0">
-                        <i class="fas fa-bolt me-2"></i>Quick Actions
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <a href="{{ url_for('restaurant.add_restaurant') }}" class="btn btn-outline-primary">
-                            <i class="fas fa-plus me-2"></i>Add Restaurant
-                        </a>
-                        <a href="{{ url_for('restaurant.restaurants') }}" class="btn btn-outline-success">
-                            <i class="fas fa-store me-2"></i>Manage Restaurants
-                        </a>
-                        <a href="{{ url_for('restaurant.orders') }}" class="btn btn-outline-warning">
-                            <i class="fas fa-receipt me-2"></i>View All Orders
-                        </a>
-                    </div>
-                </div>
-            </div>
             
             <!-- My Restaurants -->
-            <div class="card border-0 shadow-sm mt-4">
+            <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0">
                     <h5 class="mb-0">
                         <i class="fas fa-store me-2"></i>My Restaurants
@@ -161,18 +132,45 @@
                 </div>
                 <div class="card-body">
                     {% if restaurants %}
-                        {% for restaurant in restaurants %}
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <h6 class="mb-1">{{ restaurant.name }}</h6>
-                                <small class="text-muted">{{ restaurant.cuisine_type }}</small>
+                        <div class="row g-3">
+                            {% for restaurant in restaurants %}
+                            {% set image_map = {
+                                "Mario's Italian Bistro": "marrio.jpg",
+                                "Spice Palace": "spice.jpg", 
+                                "Dragon Wok": "dragon.jpeg",
+                                "Green Leaf Cafe": "green.jpg",
+                                "Burger Junction": "burger.jpg",
+                                "Sushi Zen": "sushi.jpeg",
+                                "Taco Fiesta": "taco.jpg",
+                                "Bakery Corner": "bakery.jpg"
+                            } %}
+                            {% set restaurant_image = image_map.get(restaurant.name, "bakery.jpg") %}
+                            <div class="col-md-6">
+                                <div class="card border-0 shadow-sm overflow-hidden" style="position: relative; min-height: 140px;">
+                                    <!-- Background Image -->
+                                    <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ url_for('static', filename='images/restaurants/' + restaurant_image) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
+                                    
+                                    <!-- Gradient Overlay -->
+                                    <div class="restaurant-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%); z-index: 2;"></div>
+                                    
+                                    <!-- Content -->
+                                    <div class="card-body d-flex align-items-center" style="position: relative; z-index: 3; color: white;">
+                                        <div class="flex-shrink-0">
+                                            <i class="fas fa-store" style="color: #85AA4A; font-size: 1.5rem;"></i>
+                                        </div>
+                                        <div class="flex-grow-1 ms-3">
+                                            <h6 class="mb-1 text-white fw-bold">{{ restaurant.name }}</h6>
+                                            <p class="small mb-2" style="color: rgba(255,255,255,0.8);">{{ restaurant.cuisine_type }}</p>
+                                            <a href="{{ url_for('restaurant.menu_management', restaurant_id=restaurant.id) }}" 
+                                               class="btn btn-sm" style="background-color: #85AA4A; border-color: #85AA4A; color: white; box-shadow: 0 2px 8px rgba(133, 170, 74, 0.3);">
+                                                <i class="fas fa-utensils me-1"></i>Manage Menu
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <a href="{{ url_for('restaurant.menu_management', restaurant_id=restaurant.id) }}" 
-                               class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-utensils"></i>
-                            </a>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     {% else %}
                         <div class="text-center py-3">
                             <i class="fas fa-store text-muted mb-2"></i>
@@ -182,7 +180,74 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Stats and Quick Actions -->
+        <div class="col-lg-4">
+            <!-- Consolidated Stats -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-bar me-2"></i>Your Stats
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <i class="fas fa-store display-6 mb-2" style="color: #85AA4A;"></i>
+                                <h6 class="card-title">Restaurants</h6>
+                                <h4 style="color: #85AA4A;">{{ restaurants|length }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <i class="fas fa-receipt text-success display-6 mb-2"></i>
+                                <h6 class="card-title">Total Orders</h6>
+                                <h4 class="text-success">{{ total_orders }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <i class="fas fa-clock text-warning display-6 mb-2"></i>
+                                <h6 class="card-title">Pending</h6>
+                                <h4 class="text-warning">{{ pending_orders }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <i class="fas fa-star text-info display-6 mb-2"></i>
+                                <h6 class="card-title">Rating</h6>
+                                <h4 class="text-info">4.2</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h5 class="mb-0">
+                        <i class="fas fa-bolt me-2"></i>Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('restaurant.add_restaurant') }}" class="btn" style="border-color: #85AA4A; color: #85AA4A;">
+                            <i class="fas fa-plus me-2"></i>Add Restaurant
+                        </a>
+                        <a href="{{ url_for('restaurant.restaurants') }}" class="btn" style="border-color: #28a745; color: #28a745;">
+                            <i class="fas fa-store me-2"></i>Manage Restaurants
+                        </a>
+                        <a href="{{ url_for('restaurant.orders') }}" class="btn" style="border-color: #ffc107; color: #ffc107;">
+                            <i class="fas fa-receipt me-2"></i>View All Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 </div>
 {% endblock %}
 
