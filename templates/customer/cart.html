@@ -83,10 +83,10 @@
                                 </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <span class="fw-bold">₹{{ "%.2f"|format(item.menu_item.price) }}</span>
+                                <span class="fw-bold price-per-unit" data-unit="{{ '%.2f'|format(item.menu_item.price) }}">₹{{ "%.2f"|format(item.menu_item.price) }}</span>
                             </div>
                             <div class="col-md-2 text-center">
-                                <span class="fw-bold" style="color: #85AA4A;">₹{{ "%.2f"|format(item.quantity * item.menu_item.price) }}</span>
+                                <span class="fw-bold line-total" style="color: #85AA4A;">₹{{ "%.2f"|format(item.quantity * item.menu_item.price) }}</span>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -114,7 +114,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span id="cart-total">₹{{ "%.2f"|format(total_amount) }}</span>
+                        <span id="cart-subtotal">₹{{ "%.2f"|format(total_amount) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Tax:</span>

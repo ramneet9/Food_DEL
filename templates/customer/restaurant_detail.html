@@ -44,24 +44,14 @@
 <div class="page-background">
     <div class="container py-4">
     <!-- Restaurant Image Mapping -->
-    {% set image_map = {
-        "Mario's Italian Bistro": "marrio.jpg",
-        "Spice Palace": "spice.jpg",
-        "Dragon Wok": "dragon.jpeg",
-        "Green Leaf Cafe": "green.jpg",
-        "Burger Junction": "burger.jpg",
-        "Sushi Zen": "sushi.jpeg",
-        "Taco Fiesta": "taco.jpg",
-        "Bakery Corner": "bakery.jpg"
-    } %}
-    {% set restaurant_image = image_map.get(restaurant.name, "bakery.jpg") %}
+    {# Use centralized helper that checks uploaded files by slug #}
     
     <!-- Restaurant Header -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm overflow-hidden" style="position: relative; min-height: 200px;">
                 <!-- Background Image -->
-                <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ url_for('static', filename='images/restaurants/' + restaurant_image) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
+                <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ restaurant_image(restaurant.name) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
                 
                 <!-- Gradient Overlay -->
                 <div class="restaurant-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%); z-index: 2;"></div>
@@ -227,31 +217,38 @@
         <!-- Sidebar -->
         <div class="col-lg-4">
             <!-- Reviews -->
-            {% if reviews %}
             <div class="card border-0 shadow-sm mb-4">
-                <div class="card-header bg-white border-0">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">
                         <i class="fas fa-star me-2" style="color: #85AA4A;"></i>Recent Reviews
                     </h5>
+                    {% if can_review %}
+                    <button class="btn btn-sm" id="add-review-btn" data-restaurant-id="{{ restaurant.id }}" style="background-color: #85AA4A; border-color: #85AA4A; color: white;">
+                        <i class="fas fa-plus me-1"></i>Add Review
+                    </button>
+                    {% endif %}
                 </div>
                 <div class="card-body">
-                    {% for review in reviews %}
-                    <div class="mb-3 pb-3 border-bottom">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <div class="rating-stars">
-                                {% for i in range(5) %}
-                                    <i class="fas fa-star{% if i >= review.rating %}-o{% endif %}"></i>
-                                {% endfor %}
+                    {% if reviews %}
+                        {% for review in reviews %}
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="rating-stars">
+                                    {% for i in range(5) %}
+                                        <i class="fas fa-star{% if i >= review.rating %}-o{% endif %}"></i>
+                                    {% endfor %}
+                                </div>
+                                <small class="text-muted">{{ review.created_at.strftime('%m/%d/%Y') }}</small>
                             </div>
-                            <small class="text-muted">{{ review.created_at.strftime('%m/%d/%Y') }}</small>
+                            <p class="small mb-1">{{ review.comment }}</p>
+                            <small class="text-muted">- {{ review.user.first_name }}</small>
                         </div>
-                        <p class="small mb-1">{{ review.comment }}</p>
-                        <small class="text-muted">- {{ review.user.first_name }}</small>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted small">No reviews yet.</div>
+                    {% endif %}
                 </div>
             </div>
-            {% endif %}
             
             <!-- Restaurant Info -->
             <div class="card border-0 shadow-sm">
@@ -292,6 +289,66 @@
 // Auto-submit form when filters change
 $('.form-select').on('change', function() {
     $(this).closest('form').submit();
+});
+
+// Add review modal and submission
+$('#add-review-btn').on('click', function() {
+    const modalHtml = `
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Review</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Rating</label>
+              <select class="form-select" id="review-rating">
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Terrible</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Comment</label>
+              <textarea class="form-control" id="review-comment" rows="3" placeholder="Share your experience..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="submit-review-btn">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $('body').append(modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
+    modal.show();
+    $(document).on('click', '#submit-review-btn', function() {
+        const rating = parseInt($('#review-rating').val());
+        const comment = $('#review-comment').val().trim();
+        const restId = $('#add-review-btn').data('restaurant-id');
+        $.ajax({
+            url: '/customer/add-review',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ restaurant_id: restId, rating: rating, comment: comment }),
+            success: function(response) {
+                if (response.success) {
+                    showToast('success', response.message);
+                    setTimeout(function() { location.reload(); }, 800);
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', 'An error occurred while adding review');
+            }
+        });
+    });
 });
 </script>
 {% endblock %}

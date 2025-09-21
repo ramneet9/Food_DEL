@@ -110,10 +110,15 @@
                             <strong style="color: #85AA4A;">₹{{ "%.2f"|format(order.total_amount) }}</strong>
                         </div>
                         <div class="col-md-3 text-end">
-                            <button class="btn btn-sm" data-bs-toggle="collapse" style="border-color: #85AA4A; color: #85AA4A;" 
+                            <button class="btn btn-sm me-2" data-bs-toggle="collapse" style="border-color: #85AA4A; color: #85AA4A;" 
                                     data-bs-target="#order-{{ order.id }}" aria-expanded="false">
                                 <i class="fas fa-eye me-1"></i>View Details
                             </button>
+                            {% if order.status == 'delivered' %}
+                            <button class="btn btn-sm" style="background-color: #85AA4A; border-color: #85AA4A; color: white;" onclick="openReviewModal({{ order.restaurant_id }}, '{{ order.restaurant.name|escape }}')">
+                                <i class="fas fa-star me-1"></i>Add Review
+                            </button>
+                            {% endif %}
                         </div>
                     </div>
                     
@@ -220,4 +225,66 @@
     {% endif %}
 </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openReviewModal(restaurantId, restaurantName) {
+    const modalHtml = `
+    <div class="modal fade" id="orderReviewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Review - ${restaurantName}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Rating</label>
+              <select class="form-select" id="order-review-rating">
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Poor</option>
+                <option value="1">1 - Terrible</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Comment</label>
+              <textarea class="form-control" id="order-review-comment" rows="3" placeholder="Share your experience..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="order-submit-review-btn">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $('body').append(modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('orderReviewModal'));
+    modal.show();
+    $(document).on('click', '#order-submit-review-btn', function() {
+        const rating = parseInt($('#order-review-rating').val());
+        const comment = $('#order-review-comment').val().trim();
+        $.ajax({
+            url: '/customer/add-review',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ restaurant_id: restaurantId, rating: rating, comment: comment }),
+            success: function(response) {
+                if (response.success) {
+                    showToast('success', response.message);
+                    setTimeout(function() { location.reload(); }, 800);
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', 'An error occurred while adding review');
+            }
+        });
+    });
+}
+</script>
 {% endblock %}

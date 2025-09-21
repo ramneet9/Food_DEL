@@ -42,7 +42,7 @@
     <!-- Header -->
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="display-5 fw-bold">
+            <h1 class="display-5 fw-bold text-white">
                 <i class="fas fa-receipt me-2" style="color: #85AA4A;"></i>Order Management
             </h1>
             <p class="lead text-muted">Manage and process customer orders</p>
@@ -151,8 +151,8 @@
                                             <tr>
                                                 <td>{{ item.menu_item.name }}</td>
                                                 <td>{{ item.quantity }}</td>
-                                                <td>${{ "%.2f"|format(item.price) }}</td>
-                                                <td>${{ "%.2f"|format(item.quantity * item.price) }}</td>
+                                                <td>₹{{ "%.2f"|format(item.price) }}</td>
+                                                <td>₹{{ "%.2f"|format(item.quantity * item.price) }}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

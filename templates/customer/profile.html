@@ -140,8 +140,25 @@
                         </div>
                         <div class="mb-3">
                             <label for="preference_value" class="form-label">Value</label>
-                            <input type="text" class="form-control" id="preference_value" name="preference_value" 
-                                   placeholder="Enter preference value" required>
+                            <select class="form-select d-none" id="pref_value_cuisine">
+                                <option value="">Select cuisine</option>
+                                {% for c in cuisine_types %}
+                                <option value="{{ c }}">{{ c }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="form-select d-none" id="pref_value_restaurant">
+                                <option value="">Select restaurant</option>
+                                {% for rid, rname in restaurant_options %}
+                                <option value="{{ rname }}">{{ rname }}</option>
+                                {% endfor %}
+                            </select>
+                            <select class="form-select d-none" id="pref_value_dietary">
+                                <option value="">Select dietary option</option>
+                                {% for d in dietary_options %}
+                                <option value="{{ d }}">{{ d.replace('_', ' ').title() }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" id="preference_value" name="preference_value" required>
                         </div>
                         <button type="submit" class="btn btn-success btn-sm">
                             <i class="fas fa-plus me-1"></i>Add Preference
@@ -181,11 +198,41 @@
 {% block extra_js %}
 <script>
 // Add preference functionality
+function syncPreferenceValue() {
+    const type = $('#preference_type').val();
+    $('#pref_value_cuisine, #pref_value_restaurant, #pref_value_dietary').addClass('d-none');
+    let value = '';
+    if (type === 'favorite_cuisine') {
+        $('#pref_value_cuisine').removeClass('d-none');
+        value = $('#pref_value_cuisine').val() || '';
+    } else if (type === 'favorite_restaurant') {
+        $('#pref_value_restaurant').removeClass('d-none');
+        value = $('#pref_value_restaurant').val() || '';
+    } else if (type === 'dietary_restriction') {
+        $('#pref_value_dietary').removeClass('d-none');
+        value = $('#pref_value_dietary').val() || '';
+    }
+    $('#preference_value').val(value);
+}
+
+$('#preference_type').on('change', function(){
+    syncPreferenceValue();
+});
+$('#pref_value_cuisine, #pref_value_restaurant, #pref_value_dietary').on('change', function(){
+    syncPreferenceValue();
+});
+
+// Initialize on load
+$(document).ready(function(){
+    syncPreferenceValue();
+});
 $('#add-preference-form').on('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
     const data = Object.fromEntries(formData);
+    // Ensure hidden field reflects selected dropdown
+    syncPreferenceValue();
     
     $.ajax({
         url: '/customer/add-preference',

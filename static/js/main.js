@@ -242,17 +242,48 @@ $(document).ready(function() {
         }
     });
 
-    // Quantity controls
+    // Quantity controls (generic input increment/decrement)
     $('.quantity-btn').on('click', function() {
         const button = $(this);
         const input = button.siblings('input[type="number"]');
         const currentValue = parseInt(input.val()) || 1;
-        
         if (button.hasClass('quantity-increase')) {
             input.val(currentValue + 1);
         } else if (button.hasClass('quantity-decrease') && currentValue > 1) {
             input.val(currentValue - 1);
         }
+    });
+
+    // Cart page: live update quantity via API
+    $(document).on('click', '.cart-item .quantity-btn', function() {
+        const container = $(this).closest('.cart-item');
+        const input = container.find('input[type="number"]');
+        const cartItemId = container.find('.remove-from-cart-btn').data('cart-item-id');
+        const quantity = parseInt(input.val()) || 1;
+        $.ajax({
+            url: '/customer/update-cart-quantity',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ cart_item_id: cartItemId, quantity: quantity }),
+            success: function(response) {
+                if (response.success) {
+                    // Update cart badge count
+                    updateCartCount(response.cart_count);
+                    // Update line total within the row
+                    const pricePerUnit = parseFloat(container.find('.price-per-unit').data('unit'));
+                    if (!isNaN(pricePerUnit)) {
+                        container.find('.line-total').text(formatCurrency(response.line_total));
+                    }
+                    // Update summary total
+                    updateCartTotal(response.total_amount);
+                } else {
+                    showToast('error', response.message);
+                }
+            },
+            error: function() {
+                showToast('error', 'An error occurred while updating cart');
+            }
+        });
     });
 });
 
@@ -292,7 +323,9 @@ function updateCartCount(count) {
 }
 
 function updateCartTotal(total) {
-    $('#cart-total').text('$' + parseFloat(total).toFixed(2));
+    const formatted = formatCurrency(total);
+    $('#cart-total').text(formatted);
+    $('#cart-subtotal').text(formatted);
 }
 
 function showLoading() {

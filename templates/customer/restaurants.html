@@ -93,21 +93,10 @@
     <!-- Restaurants Grid -->
     <div class="row g-4">
         {% for restaurant in restaurants.items %}
-        {% set image_map = {
-            "Mario's Italian Bistro": "marrio.jpg",
-            "Spice Palace": "spice.jpg", 
-            "Dragon Wok": "dragon.jpeg",
-            "Green Leaf Cafe": "green.jpg",
-            "Burger Junction": "burger.jpg",
-            "Sushi Zen": "sushi.jpeg",
-            "Taco Fiesta": "taco.jpg",
-            "Bakery Corner": "bakery.jpg"
-        } %}
-        {% set restaurant_image = image_map.get(restaurant.name, "bakery.jpg") %}
         <div class="col-lg-4 col-md-6">
             <div class="card restaurant-card h-100 border-0 shadow-sm overflow-hidden" style="position: relative;">
                 <!-- Background Image -->
-                <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ url_for('static', filename='images/restaurants/' + restaurant_image) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
+                <div class="restaurant-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('{{ restaurant_image(restaurant.name) }}'); background-size: cover; background-position: center; z-index: 1;"></div>
                 
                 <!-- Gradient Overlay -->
                 <div class="restaurant-overlay" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%); z-index: 2;"></div>

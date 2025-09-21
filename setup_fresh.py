@@ -25,18 +25,11 @@ def setup_fresh_database():
         
         print("🌱 Seeding database with initial data...")
         
-        # Import and run seed functions
-        from seed_data import (
-            seed_users, seed_restaurants, seed_menu_items, 
-            seed_orders, seed_reviews
-        )
+        # Import and run consolidated seed
+        from seed_data import seed_all_data
         
         try:
-            seed_users()
-            seed_restaurants()
-            seed_menu_items()
-            seed_orders()
-            seed_reviews()
+            seed_all_data()
             
             print("✅ Fresh database setup completed successfully!")
             print("🎉 You can now run: python app.py")

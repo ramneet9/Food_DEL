@@ -2,7 +2,9 @@
 Route blueprints for the Food Ordering Application
 """
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify, session, current_app
+import os
+from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import check_password_hash
 from datetime import datetime, date
@@ -209,12 +211,13 @@ def restaurant_detail(restaurant_id):
             query = query.filter(MenuItem.cuisine_type == cuisine_filter)
         
         if price_filter:
+            # Adjusted INR price bands
             if price_filter == 'low':
-                query = query.filter(MenuItem.price <= 10)
+                query = query.filter(MenuItem.price < 500)
             elif price_filter == 'medium':
-                query = query.filter(MenuItem.price > 10, MenuItem.price <= 25)
+                query = query.filter(MenuItem.price >= 500, MenuItem.price <= 1000)
             elif price_filter == 'high':
-                query = query.filter(MenuItem.price > 25)
+                query = query.filter(MenuItem.price > 1000)
         
         if dietary_filter:
             if dietary_filter == 'vegetarian':
@@ -224,7 +227,13 @@ def restaurant_detail(restaurant_id):
             elif dietary_filter == 'gluten_free':
                 query = query.filter(MenuItem.is_gluten_free == True)
         
-        menu_items = query.all()
+        # Sort: Deal of the Day first, then Today's Special, then mostly ordered, then name
+        menu_items = query.order_by(
+            MenuItem.is_deal_of_day.desc(),
+            MenuItem.is_special.desc(),
+            MenuItem.order_count.desc(),
+            MenuItem.name.asc()
+        ).all()
         
         # Get unique categories and cuisine types for filters
         categories = db.session.query(MenuItem.category).filter_by(restaurant_id=restaurant_id).distinct().all()
@@ -236,12 +245,19 @@ def restaurant_detail(restaurant_id):
         # Get reviews
         reviews = Review.query.filter_by(restaurant_id=restaurant_id).order_by(Review.created_at.desc()).limit(5).all()
         
+        # Determine if current user can review (must have at least one delivered order at this restaurant)
+        can_review = False
+        if current_user.is_authenticated and current_user.is_customer():
+            has_order = Order.query.filter_by(customer_id=current_user.id, restaurant_id=restaurant_id, status='delivered').first()
+            can_review = has_order is not None
+        
         return render_template('customer/restaurant_detail.html',
                              restaurant=restaurant,
                              menu_items=menu_items,
                              categories=categories,
                              cuisine_types=cuisine_types,
                              reviews=reviews,
+                             can_review=can_review,
                              category_filter=category_filter,
                              cuisine_filter=cuisine_filter,
                              price_filter=price_filter,
@@ -288,13 +304,13 @@ def add_to_cart():
         
         db.session.commit()
         
-        # Get updated cart count
-        cart_count = Cart.query.filter_by(customer_id=current_user.id).count()
+        # Get updated cart count as total quantity
+        cart_count = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar() or 0
         
         return jsonify({
             'success': True,
             'message': 'Item added to cart successfully',
-            'cart_count': cart_count
+            'cart_count': int(cart_count)
         })
         
     except Exception as e:
@@ -345,7 +361,7 @@ def remove_from_cart():
             db.session.commit()
             
             # Get updated cart count and total
-            cart_count = Cart.query.filter_by(customer_id=current_user.id).count()
+            cart_count = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar() or 0
             cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
             total_amount = sum(item.quantity * item.menu_item.price for item in cart_items)
             
@@ -360,6 +376,39 @@ def remove_from_cart():
             
     except Exception as e:
         logger.error(f"Error removing from cart: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
+@customer_bp.route('/update-cart-quantity', methods=['POST'])
+@login_required
+def update_cart_quantity():
+    """Update quantity for a cart item and return updated totals."""
+    if not current_user.is_customer():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        cart_item_id = request.json.get('cart_item_id')
+        quantity = request.json.get('quantity')
+        if not cart_item_id or not quantity or int(quantity) < 1:
+            return jsonify({'success': False, 'message': 'Invalid data'})
+        cart_item = Cart.query.filter_by(id=cart_item_id, customer_id=current_user.id).first()
+        if not cart_item:
+            return jsonify({'success': False, 'message': 'Cart item not found'})
+        cart_item.quantity = int(quantity)
+        db.session.commit()
+        # recompute totals
+        cart_count = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar() or 0
+        cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
+        total_amount = sum(item.quantity * item.menu_item.price for item in cart_items)
+        line_total = cart_item.quantity * cart_item.menu_item.price
+        return jsonify({
+            'success': True,
+            'message': 'Cart updated',
+            'cart_count': int(cart_count),
+            'total_amount': total_amount,
+            'line_total': line_total
+        })
+    except Exception as e:
+        logger.error(f"Error updating cart quantity: {e}")
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 
@@ -478,7 +527,15 @@ def profile():
     
     try:
         preferences = UserPreference.query.filter_by(user_id=current_user.id).all()
-        return render_template('customer/profile.html', preferences=preferences)
+        # Options for preference dropdowns
+        cuisine_types = [c[0] for c in db.session.query(MenuItem.cuisine_type).distinct().all()]
+        restaurant_options = [(r.id, r.name) for r in Restaurant.query.filter_by(is_active=True).order_by(Restaurant.name.asc()).all()]
+        dietary_options = ['vegetarian', 'vegan', 'gluten_free', 'no_spicy']
+        return render_template('customer/profile.html', 
+                               preferences=preferences,
+                               cuisine_types=cuisine_types,
+                               restaurant_options=restaurant_options,
+                               dietary_options=dietary_options)
     except Exception as e:
         logger.error(f"Error in profile view: {e}")
         flash('An error occurred while loading profile.', 'error')
@@ -518,6 +575,54 @@ def update_profile():
         
     except Exception as e:
         logger.error(f"Error updating profile: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
+@customer_bp.route('/add-preference', methods=['POST'])
+@login_required
+def add_preference():
+    """Add a user preference."""
+    if not current_user.is_customer():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        data = request.get_json(silent=True) or {}
+        pref_type = (data.get('preference_type') or '').strip()
+        pref_value = (data.get('preference_value') or '').strip()
+        allowed_types = {'favorite_cuisine', 'favorite_restaurant', 'dietary_restriction'}
+        if pref_type not in allowed_types or not pref_value:
+            return jsonify({'success': False, 'message': 'Invalid preference data'})
+        # Optional: prevent duplicates for same type/value
+        existing = UserPreference.query.filter_by(user_id=current_user.id, preference_type=pref_type, preference_value=pref_value).first()
+        if existing:
+            return jsonify({'success': True, 'message': 'Preference already exists'})
+        pref = UserPreference(preference_type=pref_type, preference_value=pref_value, user_id=current_user.id)
+        db.session.add(pref)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Preference added successfully'})
+    except Exception as e:
+        logger.error(f"Error adding preference: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
+@customer_bp.route('/remove-preference', methods=['POST'])
+@login_required
+def remove_preference():
+    """Remove a user preference by id."""
+    if not current_user.is_customer():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        data = request.get_json(silent=True) or {}
+        pref_id = data.get('preference_id')
+        if not pref_id:
+            return jsonify({'success': False, 'message': 'Invalid preference id'})
+        pref = UserPreference.query.filter_by(id=pref_id, user_id=current_user.id).first()
+        if not pref:
+            return jsonify({'success': False, 'message': 'Preference not found'})
+        db.session.delete(pref)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Preference removed successfully'})
+    except Exception as e:
+        logger.error(f"Error removing preference: {e}")
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 
@@ -588,6 +693,7 @@ def add_restaurant():
             location = request.form.get('location')
             phone = request.form.get('phone')
             email = request.form.get('email')
+            image_file = request.files.get('background_image')
             
             if not all([name, cuisine_type, location]):
                 flash('Please fill in all required fields.', 'error')
@@ -605,6 +711,20 @@ def add_restaurant():
             
             db.session.add(restaurant)
             db.session.commit()
+
+            # Save background image if provided: store under static/images/restaurants/{slug}.{ext}
+            if image_file and image_file.filename:
+                filename = secure_filename(image_file.filename)
+                _, ext = os.path.splitext(filename)
+                allowed_ext = {'.jpg', '.jpeg', '.png', '.webp'}
+                if ext.lower() in allowed_ext:
+                    # slugify name similar to app context logic
+                    import re
+                    slug = re.sub(r"[^a-z0-9_\-]", "", name.strip().lower().replace(" ", "_"))
+                    target_dir = os.path.join(current_app.static_folder, 'images', 'restaurants')
+                    os.makedirs(target_dir, exist_ok=True)
+                    save_path = os.path.join(target_dir, f"{slug}{ext.lower()}")
+                    image_file.save(save_path)
             
             flash('Restaurant added successfully!', 'success')
             return redirect(url_for('restaurant.restaurants'))
@@ -615,6 +735,47 @@ def add_restaurant():
             flash('An error occurred while adding restaurant.', 'error')
     
     return render_template('restaurant/add_restaurant.html')
+
+# Note: Update-restaurant endpoint removed per request; keep delete and menu item edits.
+
+@restaurant_bp.route('/delete-restaurant', methods=['POST'])
+@login_required
+def delete_restaurant():
+    """Delete a restaurant (and its menu items)."""
+    if not current_user.is_restaurant_owner():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        restaurant_id = request.json.get('restaurant_id')
+        restaurant = Restaurant.query.filter_by(id=restaurant_id, owner_id=current_user.id).first()
+        if not restaurant:
+            return jsonify({'success': False, 'message': 'Restaurant not found'})
+        # Perform manual cascade deletes to satisfy FKs
+        try:
+            # Delete reviews for this restaurant
+            Review.query.filter_by(restaurant_id=restaurant.id).delete(synchronize_session=False)
+            # Collect menu item ids
+            menu_item_ids = [m.id for m in MenuItem.query.filter_by(restaurant_id=restaurant.id).all()]
+            if menu_item_ids:
+                # Delete cart items referencing these menu items
+                Cart.query.filter(Cart.menu_item_id.in_(menu_item_ids)).delete(synchronize_session=False)
+                # Delete order items referencing these menu items
+                OrderItem.query.filter(OrderItem.menu_item_id.in_(menu_item_ids)).delete(synchronize_session=False)
+            # Delete orders for this restaurant (order_items already removed)
+            Order.query.filter_by(restaurant_id=restaurant.id).delete(synchronize_session=False)
+            # Delete menu items
+            MenuItem.query.filter_by(restaurant_id=restaurant.id).delete(synchronize_session=False)
+            # Finally delete restaurant
+            db.session.delete(restaurant)
+            db.session.commit()
+        except Exception as e:
+            logger.error(f"Error during cascading delete for restaurant {restaurant_id}: {e}")
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Failed to delete due to related data'})
+        return jsonify({'success': True, 'message': 'Restaurant deleted'})
+    except Exception as e:
+        logger.error(f"Error deleting restaurant: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
 
 @restaurant_bp.route('/restaurant/<int:restaurant_id>/menu')
 @login_required
@@ -688,6 +849,56 @@ def add_menu_item():
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 
+@restaurant_bp.route('/update-menu-item', methods=['POST'])
+@login_required
+def update_menu_item():
+    """Edit an existing menu item (owner only)."""
+    if not current_user.is_restaurant_owner():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        data = request.get_json(silent=True) or {}
+        item_id = data.get('id')
+        if not item_id:
+            return jsonify({'success': False, 'message': 'Invalid menu item'})
+        item = MenuItem.query.join(Restaurant).filter(
+            MenuItem.id == item_id,
+            Restaurant.owner_id == current_user.id
+        ).first()
+        if not item:
+            return jsonify({'success': False, 'message': 'Menu item not found'})
+        updatable_fields = ['name', 'description', 'price', 'category', 'cuisine_type', 'is_vegetarian', 'is_vegan', 'is_gluten_free', 'is_special', 'is_deal_of_day', 'is_available']
+        for field in updatable_fields:
+            if field in data:
+                setattr(item, field, data[field])
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Menu item updated'})
+    except Exception as e:
+        logger.error(f"Error updating menu item: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
+@restaurant_bp.route('/delete-menu-item', methods=['POST'])
+@login_required
+def delete_menu_item():
+    """Delete a menu item (owner only)."""
+    if not current_user.is_restaurant_owner():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        item_id = request.json.get('id')
+        item = MenuItem.query.join(Restaurant).filter(
+            MenuItem.id == item_id,
+            Restaurant.owner_id == current_user.id
+        ).first()
+        if not item:
+            return jsonify({'success': False, 'message': 'Menu item not found'})
+        db.session.delete(item)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Menu item deleted'})
+    except Exception as e:
+        logger.error(f"Error deleting menu item: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
 @restaurant_bp.route('/orders')
 @login_required
 def orders():
@@ -757,46 +968,89 @@ def update_order_status():
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 
+@customer_bp.route('/add-review', methods=['POST'])
+@login_required
+def add_review():
+    """Add a review for a restaurant if user has a delivered order for it."""
+    if not current_user.is_customer():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        restaurant_id = request.json.get('restaurant_id')
+        rating = int(request.json.get('rating', 0))
+        comment = request.json.get('comment', '').strip()
+        if not restaurant_id or rating < 1 or rating > 5 or not comment:
+            return jsonify({'success': False, 'message': 'Invalid review data'})
+        # Verify eligibility: at least one delivered order
+        eligible = Order.query.filter_by(customer_id=current_user.id, restaurant_id=restaurant_id, status='delivered').first()
+        if not eligible:
+            return jsonify({'success': False, 'message': 'You can review only after a delivered order'})
+        review = Review(rating=rating, comment=comment, user_id=current_user.id, restaurant_id=restaurant_id)
+        db.session.add(review)
+        db.session.commit()
+        # Update aggregate rating
+        restaurant = Restaurant.query.get(restaurant_id)
+        reviews = Review.query.filter_by(restaurant_id=restaurant_id).all()
+        restaurant.total_reviews = len(reviews)
+        restaurant.rating = sum(r.rating for r in reviews) / len(reviews)
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Review added successfully'})
+    except Exception as e:
+        logger.error(f"Error adding review: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
 def get_customer_recommendations(customer_id):
     """Get personalized recommendations for customer"""
     try:
         # Get user preferences
         preferences = UserPreference.query.filter_by(user_id=customer_id).all()
-        
-        # Get user's order history
-        user_orders = Order.query.filter_by(customer_id=customer_id).all()
-        
-        # Simple recommendation logic based on preferences and order history
-        recommendations = []
-        
-        # Get favorite cuisines
-        favorite_cuisines = [p.preference_value for p in preferences 
-                           if p.preference_type == 'favorite_cuisine']
-        
+
+        # Build dietary restriction filters
+        dietary_values = {p.preference_value for p in preferences if p.preference_type == 'dietary_restriction'}
+        require_veg = 'vegetarian' in dietary_values
+        require_vegan = 'vegan' in dietary_values
+        require_gluten_free = 'gluten_free' in dietary_values
+
+        # Favorite cuisines influence
+        favorite_cuisines = [p.preference_value for p in preferences if p.preference_type == 'favorite_cuisine']
+
+        base_query = MenuItem.query.filter(MenuItem.is_available == True)
         if favorite_cuisines:
-            # Recommend items from favorite cuisines
-            recommended_items = MenuItem.query.filter(
-                MenuItem.cuisine_type.in_(favorite_cuisines),
-                MenuItem.is_available == True
-            ).limit(5).all()
-            recommendations.extend(recommended_items)
-        
-        # Get mostly ordered items
-        mostly_ordered = MenuItem.query.filter(
-            MenuItem.order_count > 10,
-            MenuItem.is_available == True
-        ).limit(3).all()
-        recommendations.extend(mostly_ordered)
-        
-        # Remove duplicates
-        seen = set()
-        unique_recommendations = []
-        for item in recommendations:
+            base_query = base_query.filter(MenuItem.cuisine_type.in_(favorite_cuisines))
+
+        # Apply dietary constraints
+        if require_vegan:
+            base_query = base_query.filter(MenuItem.is_vegan == True)
+        if require_veg:
+            base_query = base_query.filter(MenuItem.is_vegetarian == True)
+        if require_gluten_free:
+            base_query = base_query.filter(MenuItem.is_gluten_free == True)
+
+        # Prioritize popular items while respecting filters
+        filtered_popular = base_query.order_by(MenuItem.order_count.desc()).limit(8).all()
+
+        # If not enough, backfill with popular overall but still respecting dietary filters
+        if len(filtered_popular) < 8:
+            backfill_query = MenuItem.query.filter(MenuItem.is_available == True)
+            if require_vegan:
+                backfill_query = backfill_query.filter(MenuItem.is_vegan == True)
+            if require_veg:
+                backfill_query = backfill_query.filter(MenuItem.is_vegetarian == True)
+            if require_gluten_free:
+                backfill_query = backfill_query.filter(MenuItem.is_gluten_free == True)
+            backfill = backfill_query.order_by(MenuItem.order_count.desc()).limit(8 - len(filtered_popular)).all()
+        else:
+            backfill = []
+
+        # Combine and de-duplicate
+        seen: set[int] = set()
+        combined = []
+        for item in filtered_popular + backfill:
             if item.id not in seen:
                 seen.add(item.id)
-                unique_recommendations.append(item)
-        
-        return unique_recommendations[:8]  # Return top 8 recommendations
+                combined.append(item)
+
+        return combined[:8]
         
     except Exception as e:
         logger.error(f"Error getting recommendations: {e}")

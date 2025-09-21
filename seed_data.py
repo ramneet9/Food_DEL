@@ -39,41 +39,31 @@ def seed_users():
     users_data = [
         # Customers
         {
-            'username': 'john_doe',
-            'email': 'john@example.com',
-            'password': 'password123',
+            'username': 'ramneet',
+            'email': 'ram@example.com',
+            'password': 'ramneet',
             'role': 'customer',
-            'first_name': 'John',
-            'last_name': 'Doe',
+            'first_name': 'Ramneet',
+            'last_name': 'Singh',
             'phone': '+1234567890',
-            'address': '123 Main St, City, State'
+            'address': '123 Apt, West Delhi'
         },
         {
-            'username': 'jane_smith',
-            'email': 'jane@example.com',
-            'password': 'password123',
+            'username': 'batman',
+            'email': 'batman@example.com',
+            'password': 'batman',
             'role': 'customer',
-            'first_name': 'Jane',
-            'last_name': 'Smith',
+            'first_name': 'BAT',
+            'last_name': 'MAN',
             'phone': '+1234567891',
-            'address': '456 Oak Ave, City, State'
-        },
-        {
-            'username': 'mike_wilson',
-            'email': 'mike@example.com',
-            'password': 'password123',
-            'role': 'customer',
-            'first_name': 'Mike',
-            'last_name': 'Wilson',
-            'phone': '+1234567892',
-            'address': '789 Pine Rd, City, State'
+            'address': '456, South Delhi'
         },
         
         # Restaurant Owners
         {
             'username': 'chef_mario',
             'email': 'mario@italianbistro.com',
-            'password': 'password123',
+            'password': 'mario',
             'role': 'restaurant_owner',
             'first_name': 'Mario',
             'last_name': 'Rossi',
@@ -83,52 +73,12 @@ def seed_users():
         {
             'username': 'chef_raj',
             'email': 'raj@spicepalace.com',
-            'password': 'password123',
+            'password': 'raj',
             'role': 'restaurant_owner',
             'first_name': 'Raj',
             'last_name': 'Patel',
             'phone': '+1234567894',
             'address': '654 Curry Lane, City, State'
-        },
-        {
-            'username': 'chef_li',
-            'email': 'li@dragonwok.com',
-            'password': 'password123',
-            'role': 'restaurant_owner',
-            'first_name': 'Li',
-            'last_name': 'Wang',
-            'phone': '+1234567895',
-            'address': '987 Bamboo St, City, State'
-        },
-        {
-            'username': 'chef_sarah',
-            'email': 'sarah@greenleaf.com',
-            'password': 'password123',
-            'role': 'restaurant_owner',
-            'first_name': 'Sarah',
-            'last_name': 'Johnson',
-            'phone': '+1234567896',
-            'address': '147 Garden Way, City, State'
-        },
-        {
-            'username': 'chef_antonio',
-            'email': 'antonio@tacofiesta.com',
-            'password': 'password123',
-            'role': 'restaurant_owner',
-            'first_name': 'Antonio',
-            'last_name': 'Garcia',
-            'phone': '+1234567897',
-            'address': '258 Taco Street, City, State'
-        },
-        {
-            'username': 'chef_emily',
-            'email': 'emily@bakerycorner.com',
-            'password': 'password123',
-            'role': 'restaurant_owner',
-            'first_name': 'Emily',
-            'last_name': 'Davis',
-            'phone': '+1234567898',
-            'address': '369 Sweet Avenue, City, State'
         }
     ]
     
@@ -153,10 +103,10 @@ def seed_restaurants():
     # Get restaurant owners
     mario = User.query.filter_by(username='chef_mario').first()
     raj = User.query.filter_by(username='chef_raj').first()
-    li = User.query.filter_by(username='chef_li').first()
-    sarah = User.query.filter_by(username='chef_sarah').first()
-    antonio = User.query.filter_by(username='chef_antonio').first()
-    emily = User.query.filter_by(username='chef_emily').first()
+    # li = User.query.filter_by(username='chef_li').first()
+    # sarah = User.query.filter_by(username='chef_sarah').first()
+    # antonio = User.query.filter_by(username='chef_antonio').first()
+    # emily = User.query.filter_by(username='chef_emily').first()
     
     restaurants_data = [
         {
@@ -184,7 +134,7 @@ def seed_restaurants():
             'location': 'Chinatown',
             'phone': '+1234567003',
             'email': 'info@dragonwok.com',
-            'owner_id': li.id
+            'owner_id': raj.id
         },
         {
             'name': 'Green Leaf Cafe',
@@ -193,7 +143,7 @@ def seed_restaurants():
             'location': 'Uptown',
             'phone': '+1234567004',
             'email': 'info@greenleaf.com',
-            'owner_id': sarah.id
+            'owner_id': mario.id
         },
         {
             'name': 'Burger Junction',
@@ -211,7 +161,7 @@ def seed_restaurants():
             'location': 'Midtown',
             'phone': '+1234567006',
             'email': 'info@sushizen.com',
-            'owner_id': li.id
+            'owner_id': raj.id
         },
         {
             'name': 'Taco Fiesta',
@@ -220,7 +170,7 @@ def seed_restaurants():
             'location': 'Downtown',
             'phone': '+1234567007',
             'email': 'info@tacofiesta.com',
-            'owner_id': antonio.id
+            'owner_id': mario.id
         },
         {
             'name': 'Bakery Corner',
@@ -229,7 +179,7 @@ def seed_restaurants():
             'location': 'Uptown',
             'phone': '+1234567008',
             'email': 'info@bakerycorner.com',
-            'owner_id': emily.id
+            'owner_id': raj.id
         }
     ]
     
@@ -257,7 +207,7 @@ def seed_menu_items():
         {
             'name': 'Margherita Pizza',
             'description': 'Classic pizza with tomato sauce, mozzarella, and fresh basil',
-            'price': 16.99,
+            'price': 169,
             'category': 'Pizza',
             'cuisine_type': 'Italian',
             'is_vegetarian': True,
@@ -267,7 +217,7 @@ def seed_menu_items():
         {
             'name': 'Spaghetti Carbonara',
             'description': 'Creamy pasta with eggs, cheese, and pancetta',
-            'price': 18.99,
+            'price': 189,
             'category': 'Pasta',
             'cuisine_type': 'Italian',
             'is_vegetarian': False,
@@ -276,7 +226,7 @@ def seed_menu_items():
         {
             'name': 'Chicken Parmigiana',
             'description': 'Breaded chicken breast with marinara sauce and mozzarella',
-            'price': 22.99,
+            'price': 229,
             'category': 'Main Course',
             'cuisine_type': 'Italian',
             'is_vegetarian': False,
@@ -285,7 +235,7 @@ def seed_menu_items():
         {
             'name': 'Tiramisu',
             'description': 'Classic Italian dessert with coffee and mascarpone',
-            'price': 8.99,
+            'price': 899,
             'category': 'Dessert',
             'cuisine_type': 'Italian',
             'is_vegetarian': True,
@@ -296,7 +246,7 @@ def seed_menu_items():
         {
             'name': 'Chicken Tikka Masala',
             'description': 'Tender chicken in creamy tomato sauce with aromatic spices',
-            'price': 19.99,
+            'price': 199,
             'category': 'Curry',
             'cuisine_type': 'Indian',
             'is_vegetarian': False,
@@ -306,7 +256,7 @@ def seed_menu_items():
         {
             'name': 'Vegetable Biryani',
             'description': 'Fragrant basmati rice with mixed vegetables and spices',
-            'price': 16.99,
+            'price': 199,
             'category': 'Rice',
             'cuisine_type': 'Indian',
             'is_vegetarian': True,
@@ -315,7 +265,7 @@ def seed_menu_items():
         {
             'name': 'Butter Chicken',
             'description': 'Creamy tomato-based curry with tender chicken pieces',
-            'price': 21.99,
+            'price': 299,
             'category': 'Curry',
             'cuisine_type': 'Indian',
             'is_vegetarian': False,
@@ -324,7 +274,7 @@ def seed_menu_items():
         {
             'name': 'Naan Bread',
             'description': 'Fresh baked flatbread',
-            'price': 4.99,
+            'price': 49,
             'category': 'Bread',
             'cuisine_type': 'Indian',
             'is_vegetarian': True,
@@ -335,7 +285,7 @@ def seed_menu_items():
         {
             'name': 'Kung Pao Chicken',
             'description': 'Spicy stir-fried chicken with peanuts and vegetables',
-            'price': 17.99,
+            'price': 179,
             'category': 'Stir Fry',
             'cuisine_type': 'Chinese',
             'is_vegetarian': False,
@@ -344,7 +294,7 @@ def seed_menu_items():
         {
             'name': 'Sweet and Sour Pork',
             'description': 'Crispy pork with bell peppers in tangy sauce',
-            'price': 18.99,
+            'price': 199,
             'category': 'Main Course',
             'cuisine_type': 'Chinese',
             'is_vegetarian': False,
@@ -353,7 +303,7 @@ def seed_menu_items():
         {
             'name': 'Vegetable Lo Mein',
             'description': 'Stir-fried noodles with mixed vegetables',
-            'price': 14.99,
+            'price': 199,
             'category': 'Noodles',
             'cuisine_type': 'Chinese',
             'is_vegetarian': True,
@@ -362,7 +312,7 @@ def seed_menu_items():
         {
             'name': 'Spring Rolls',
             'description': 'Crispy vegetable spring rolls with sweet chili sauce',
-            'price': 7.99,
+            'price': 79,
             'category': 'Appetizer',
             'cuisine_type': 'Chinese',
             'is_vegetarian': True,
@@ -373,7 +323,7 @@ def seed_menu_items():
         {
             'name': 'Quinoa Buddha Bowl',
             'description': 'Nutritious bowl with quinoa, roasted vegetables, and tahini dressing',
-            'price': 15.99,
+            'price': 159,
             'category': 'Bowl',
             'cuisine_type': 'Vegetarian',
             'is_vegetarian': True,
@@ -384,7 +334,7 @@ def seed_menu_items():
         {
             'name': 'Veggie Burger',
             'description': 'Plant-based patty with lettuce, tomato, and vegan mayo',
-            'price': 13.99,
+            'price': 139,
             'category': 'Burger',
             'cuisine_type': 'Vegetarian',
             'is_vegetarian': True,
@@ -394,7 +344,7 @@ def seed_menu_items():
         {
             'name': 'Green Smoothie',
             'description': 'Blend of spinach, banana, mango, and coconut water',
-            'price': 8.99,
+            'price': 89,
             'category': 'Beverage',
             'cuisine_type': 'Vegetarian',
             'is_vegetarian': True,
@@ -404,7 +354,7 @@ def seed_menu_items():
         {
             'name': 'Avocado Toast',
             'description': 'Smashed avocado on sourdough with cherry tomatoes',
-            'price': 11.99,
+            'price': 119,
             'category': 'Breakfast',
             'cuisine_type': 'Vegetarian',
             'is_vegetarian': True,
@@ -416,7 +366,7 @@ def seed_menu_items():
         {
             'name': 'Classic Cheeseburger',
             'description': 'Beef patty with cheese, lettuce, tomato, and special sauce',
-            'price': 14.99,
+            'price': 149,
             'category': 'Burger',
             'cuisine_type': 'American',
             'is_vegetarian': False,
@@ -425,7 +375,7 @@ def seed_menu_items():
         {
             'name': 'BBQ Bacon Burger',
             'description': 'Beef patty with bacon, BBQ sauce, and onion rings',
-            'price': 17.99,
+            'price': 179,
             'category': 'Burger',
             'cuisine_type': 'American',
             'is_vegetarian': False,
@@ -434,7 +384,7 @@ def seed_menu_items():
         {
             'name': 'Chicken Wings',
             'description': 'Crispy wings with choice of buffalo, BBQ, or honey mustard',
-            'price': 12.99,
+            'price': 129,
             'category': 'Appetizer',
             'cuisine_type': 'American',
             'is_vegetarian': False,
@@ -443,7 +393,7 @@ def seed_menu_items():
         {
             'name': 'French Fries',
             'description': 'Golden crispy fries with sea salt',
-            'price': 6.99,
+            'price': 69,
             'category': 'Side',
             'cuisine_type': 'American',
             'is_vegetarian': True,
@@ -454,7 +404,7 @@ def seed_menu_items():
         {
             'name': 'California Roll',
             'description': 'Crab, avocado, and cucumber roll',
-            'price': 12.99,
+            'price': 129,
             'category': 'Sushi Roll',
             'cuisine_type': 'Japanese',
             'is_vegetarian': False,
@@ -463,7 +413,7 @@ def seed_menu_items():
         {
             'name': 'Salmon Nigiri',
             'description': 'Fresh salmon over seasoned rice',
-            'price': 15.99,
+            'price': 159,
             'category': 'Nigiri',
             'cuisine_type': 'Japanese',
             'is_vegetarian': False,
@@ -472,7 +422,7 @@ def seed_menu_items():
         {
             'name': 'Vegetable Tempura',
             'description': 'Lightly battered and fried seasonal vegetables',
-            'price': 11.99,
+            'price': 119,
             'category': 'Appetizer',
             'cuisine_type': 'Japanese',
             'is_vegetarian': True,
@@ -481,7 +431,7 @@ def seed_menu_items():
         {
             'name': 'Miso Soup',
             'description': 'Traditional Japanese soup with tofu and seaweed',
-            'price': 4.99,
+            'price': 99,
             'category': 'Soup',
             'cuisine_type': 'Japanese',
             'is_vegetarian': True,
@@ -492,7 +442,7 @@ def seed_menu_items():
         {
             'name': 'Carnitas Tacos',
             'description': 'Slow-cooked pork with onions, cilantro, and lime',
-            'price': 12.99,
+            'price': 199,
             'category': 'Tacos',
             'cuisine_type': 'Mexican',
             'is_vegetarian': False,
@@ -501,7 +451,7 @@ def seed_menu_items():
         {
             'name': 'Veggie Quesadilla',
             'description': 'Grilled tortilla with cheese, peppers, and onions',
-            'price': 10.99,
+            'price': 109,
             'category': 'Quesadilla',
             'cuisine_type': 'Mexican',
             'is_vegetarian': True,
@@ -510,7 +460,7 @@ def seed_menu_items():
         {
             'name': 'Churros',
             'description': 'Crispy fried dough with cinnamon sugar',
-            'price': 6.99,
+            'price': 99,
             'category': 'Dessert',
             'cuisine_type': 'Mexican',
             'is_vegetarian': True,
@@ -521,7 +471,7 @@ def seed_menu_items():
         {
             'name': 'Croissant',
             'description': 'Buttery, flaky French pastry',
-            'price': 3.99,
+            'price': 39,
             'category': 'Pastry',
             'cuisine_type': 'Bakery',
             'is_vegetarian': True,
@@ -530,7 +480,7 @@ def seed_menu_items():
         {
             'name': 'Chocolate Chip Cookies',
             'description': 'Fresh baked cookies with premium chocolate chips',
-            'price': 2.99,
+            'price': 29,
             'category': 'Cookies',
             'cuisine_type': 'Bakery',
             'is_vegetarian': True,
@@ -539,7 +489,7 @@ def seed_menu_items():
         {
             'name': 'Artisan Bread',
             'description': 'Fresh baked sourdough bread',
-            'price': 5.99,
+            'price': 59,
             'category': 'Bread',
             'cuisine_type': 'Bakery',
             'is_vegetarian': True,
@@ -556,26 +506,18 @@ def seed_menu_items():
 
 def seed_user_preferences():
     """Seed user preferences data"""
-    # Get users
-    john = User.query.filter_by(username='john_doe').first()
-    jane = User.query.filter_by(username='jane_smith').first()
-    mike = User.query.filter_by(username='mike_wilson').first()
+    # Get existing seeded customers
+    ramneet = User.query.filter_by(username='ramneet').first()
+    batman = User.query.filter_by(username='batman').first()
     
     preferences_data = [
-        # John's preferences
-        {'user_id': john.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Italian'},
-        {'user_id': john.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'American'},
-        {'user_id': john.id, 'preference_type': 'dietary_restriction', 'preference_value': 'no_spicy'},
-        
-        # Jane's preferences
-        {'user_id': jane.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Indian'},
-        {'user_id': jane.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Vegetarian'},
-        {'user_id': jane.id, 'preference_type': 'dietary_restriction', 'preference_value': 'vegetarian'},
-        
-        # Mike's preferences
-        {'user_id': mike.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Chinese'},
-        {'user_id': mike.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Japanese'},
-        {'user_id': mike.id, 'preference_type': 'dietary_restriction', 'preference_value': 'gluten_free'}
+        # Preferences for existing users
+        {'user_id': ramneet.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Italian'},
+        {'user_id': ramneet.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'American'},
+        {'user_id': ramneet.id, 'preference_type': 'dietary_restriction', 'preference_value': 'no_spicy'},
+        {'user_id': batman.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Indian'},
+        {'user_id': batman.id, 'preference_type': 'favorite_cuisine', 'preference_value': 'Vegetarian'},
+        {'user_id': batman.id, 'preference_type': 'dietary_restriction', 'preference_value': 'vegetarian'}
     ]
     
     for pref_data in preferences_data:
@@ -588,9 +530,8 @@ def seed_user_preferences():
 def seed_reviews():
     """Seed reviews data"""
     # Get users and restaurants
-    john = User.query.filter_by(username='john_doe').first()
-    jane = User.query.filter_by(username='jane_smith').first()
-    mike = User.query.filter_by(username='mike_wilson').first()
+    ramneet = User.query.filter_by(username='ramneet').first()
+    batman = User.query.filter_by(username='batman').first()
     
     italian_bistro = Restaurant.query.filter_by(name='Mario\'s Italian Bistro').first()
     spice_palace = Restaurant.query.filter_by(name='Spice Palace').first()
@@ -600,31 +541,31 @@ def seed_reviews():
         {
             'rating': 5,
             'comment': 'Amazing pizza! The Margherita was perfect with fresh basil.',
-            'user_id': john.id,
+            'user_id': ramneet.id,
             'restaurant_id': italian_bistro.id
         },
         {
             'rating': 4,
             'comment': 'Great Italian food, but a bit pricey.',
-            'user_id': jane.id,
+            'user_id': batman.id,
             'restaurant_id': italian_bistro.id
         },
         {
             'rating': 5,
             'comment': 'Best Indian food in town! The Chicken Tikka Masala was incredible.',
-            'user_id': jane.id,
+            'user_id': batman.id,
             'restaurant_id': spice_palace.id
         },
         {
             'rating': 4,
             'comment': 'Good Chinese food, quick service.',
-            'user_id': mike.id,
+            'user_id': batman.id,
             'restaurant_id': dragon_wok.id
         },
         {
             'rating': 3,
             'comment': 'Decent food but could be better.',
-            'user_id': john.id,
+            'user_id': ramneet.id,
             'restaurant_id': dragon_wok.id
         }
     ]

@@ -144,6 +144,18 @@ def inject_image_paths():
 
     return dict(IMAGE_PATHS=IMAGE_PATHS, restaurant_image=restaurant_image)
 
+@app.context_processor
+def inject_cart_count():
+    """Inject current cart item count (sum of quantities) for navbar badge."""
+    try:
+        if current_user.is_authenticated and hasattr(current_user, 'is_customer') and current_user.is_customer():
+            # Sum quantities for accurate cart count
+            total_quantity = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar()
+            return dict(cart_count=int(total_quantity or 0))
+    except Exception:
+        pass
+    return dict(cart_count=0)
+
 def create_tables():
     """Create database tables"""
     with app.app_context():
