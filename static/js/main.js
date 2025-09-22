@@ -74,7 +74,7 @@ $(document).ready(function() {
                     if (response.success) {
                         showToast('success', response.message);
                         updateCartCount(response.cart_count);
-                        updateCartTotal(response.total_amount);
+                        updateCartSummary(response.subtotal_amount, response.discount_amount, response.total_amount);
                         // Remove the cart item from DOM
                         button.closest('.cart-item').fadeOut(300, function() {
                             $(this).remove();
@@ -269,13 +269,19 @@ $(document).ready(function() {
                 if (response.success) {
                     // Update cart badge count
                     updateCartCount(response.cart_count);
+                    // Update unit price if discounted
+                    if (typeof response.line_unit_price !== 'undefined') {
+                        const unit = parseFloat(response.line_unit_price);
+                        const unitSpan = container.find('.price-per-unit');
+                        unitSpan.text(formatCurrency(unit));
+                        unitSpan.attr('data-unit', unit.toFixed(2));
+                    }
                     // Update line total within the row
-                    const pricePerUnit = parseFloat(container.find('.price-per-unit').data('unit'));
-                    if (!isNaN(pricePerUnit)) {
+                    if (typeof response.line_total !== 'undefined') {
                         container.find('.line-total').text(formatCurrency(response.line_total));
                     }
-                    // Update summary total
-                    updateCartTotal(response.total_amount);
+                    // Update summary totals
+                    updateCartSummary(response.subtotal_amount, response.discount_amount, response.total_amount);
                 } else {
                     showToast('error', response.message);
                 }
@@ -326,6 +332,12 @@ function updateCartTotal(total) {
     const formatted = formatCurrency(total);
     $('#cart-total').text(formatted);
     $('#cart-subtotal').text(formatted);
+}
+
+function updateCartSummary(subtotal, discount, total) {
+    $('#cart-subtotal').text(formatCurrency(subtotal));
+    $('#cart-discount').text('-' + formatCurrency(discount));
+    $('#cart-total').text(formatCurrency(total));
 }
 
 function showLoading() {

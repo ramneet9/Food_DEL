@@ -115,7 +115,7 @@
                                 <i class="fas fa-eye me-1"></i>View Details
                             </button>
                             {% if order.status == 'delivered' %}
-                            <button class="btn btn-sm" style="background-color: #85AA4A; border-color: #85AA4A; color: white;" onclick="openReviewModal({{ order.restaurant_id }}, '{{ order.restaurant.name|escape }}')">
+                            <button class="btn btn-sm order-add-review-btn" data-restaurant-id="{{ order.restaurant_id }}" data-restaurant-name='{{ order.restaurant.name|e }}' style="background-color: #85AA4A; border-color: #85AA4A; color: white;" onclick="openReviewModal({{ order.restaurant_id }}, {{ order.restaurant.name|tojson }})">
                                 <i class="fas fa-star me-1"></i>Add Review
                             </button>
                             {% endif %}
@@ -225,66 +225,90 @@
     {% endif %}
 </div>
 </div>
+
+<!-- Static Review Modal -->
+<div class="modal fade" id="orderReviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderReviewModalLabel">Add Review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="order-review-restaurant-id">
+        <div class="mb-3">
+          <label class="form-label">Rating</label>
+          <select class="form-select" id="order-review-rating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Average</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Terrible</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Comment</label>
+          <textarea class="form-control" id="order-review-comment" rows="3" placeholder="Share your experience..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="order-submit-review-btn">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function openReviewModal(restaurantId, restaurantName) {
-    const modalHtml = `
-    <div class="modal fade" id="orderReviewModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add Review - ${restaurantName}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Rating</label>
-              <select class="form-select" id="order-review-rating">
-                <option value="5">5 - Excellent</option>
-                <option value="4">4 - Good</option>
-                <option value="3">3 - Average</option>
-                <option value="2">2 - Poor</option>
-                <option value="1">1 - Terrible</option>
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" id="order-review-comment" rows="3" placeholder="Share your experience..."></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="order-submit-review-btn">Submit</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
-    $('body').append(modalHtml);
-    const modal = new bootstrap.Modal(document.getElementById('orderReviewModal'));
-    modal.show();
-    $(document).on('click', '#order-submit-review-btn', function() {
-        const rating = parseInt($('#order-review-rating').val());
-        const comment = $('#order-review-comment').val().trim();
-        $.ajax({
-            url: '/customer/add-review',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ restaurant_id: restaurantId, rating: rating, comment: comment }),
-            success: function(response) {
-                if (response.success) {
-                    showToast('success', response.message);
-                    setTimeout(function() { location.reload(); }, 800);
-                } else {
-                    showToast('error', response.message);
-                }
-            },
-            error: function() {
-                showToast('error', 'An error occurred while adding review');
-            }
-        });
-    });
+window.openReviewModal = function(restaurantId, restaurantName) {
+    try {
+        document.getElementById('order-review-restaurant-id').value = restaurantId;
+        document.getElementById('orderReviewModalLabel').innerText = 'Add Review - ' + restaurantName;
+        const modal = new bootstrap.Modal(document.getElementById('orderReviewModal'));
+        modal.show();
+    } catch (e) {
+        console.error('Failed to open review modal', e);
+        showToast('error', 'Unable to open review form');
+    }
 }
+
+// Bind submit once
+$(document).off('click', '#order-submit-review-btn').on('click', '#order-submit-review-btn', function() {
+    const restaurantId = parseInt($('#order-review-restaurant-id').val());
+    const rating = parseInt($('#order-review-rating').val());
+    const comment = $('#order-review-comment').val().trim();
+    $.ajax({
+        url: '/customer/add-review',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ restaurant_id: restaurantId, rating: rating, comment: comment }),
+        success: function(response) {
+            if (response.success) {
+                showToast('success', response.message);
+                setTimeout(function() { location.reload(); }, 800);
+            } else {
+                showToast('error', response.message);
+            }
+        },
+        error: function() {
+            showToast('error', 'An error occurred while adding review');
+        }
+    });
+});
+
+// Fallback: delegated click handler for Add Review buttons
+$(document).on('click', '.order-add-review-btn', function(e) {
+    try {
+        const rid = parseInt($(this).data('restaurant-id'));
+        const rname = $(this).data('restaurant-name');
+        if (!isNaN(rid)) {
+            window.openReviewModal(rid, rname);
+        }
+    } catch (err) {
+        console.error('openReviewModal fallback failed', err);
+    }
+});
 </script>
 {% endblock %}

@@ -160,6 +160,18 @@ def create_tables():
     """Create database tables"""
     with app.app_context():
         db.create_all()
+        # Lightweight migration for new Review columns when using SQLite
+        try:
+            from sqlalchemy import text
+            result = db.session.execute(text("PRAGMA table_info(reviews);"))
+            cols = {row[1] for row in result.fetchall()}
+            if 'owner_reply' not in cols:
+                db.session.execute(text("ALTER TABLE reviews ADD COLUMN owner_reply TEXT;"))
+            if 'owner_reply_at' not in cols:
+                db.session.execute(text("ALTER TABLE reviews ADD COLUMN owner_reply_at DATETIME;"))
+            db.session.commit()
+        except Exception as mig_e:
+            logger.warning(f"Migration check failed or not needed: {mig_e}")
         logger.info("Database tables created successfully")
 
 def seed_database():

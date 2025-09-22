@@ -73,24 +73,6 @@
                             </button>
                         </div>
                     </form>
-                    
-                    <hr class="my-4">
-                    
-                    <div class="text-center">
-                        <h6 class="text-muted mb-3">Demo Accounts</h6>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <button class="btn btn-outline-primary btn-sm w-100" onclick="fillDemo('customer')">
-                                    <i class="fas fa-user me-1"></i>Customer
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button class="btn btn-outline-success btn-sm w-100" onclick="fillDemo('restaurant')">
-                                    <i class="fas fa-store me-1"></i>Restaurant
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -99,16 +81,4 @@
 </section>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-function fillDemo(type) {
-    if (type === 'customer') {
-        document.getElementById('username').value = 'john_doe';
-        document.getElementById('password').value = 'password123';
-    } else if (type === 'restaurant') {
-        document.getElementById('username').value = 'chef_mario';
-        document.getElementById('password').value = 'password123';
-    }
-}
-</script>
-{% endblock %}
+{% block extra_js %}{% endblock %}

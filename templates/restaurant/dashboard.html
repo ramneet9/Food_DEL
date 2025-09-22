@@ -213,6 +213,43 @@
                 </div>
             </div>
             
+            <!-- Recent Reviews -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-comments me-2"></i>Recent Reviews
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_reviews %}
+                        {% for r in recent_reviews %}
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between">
+                                <strong>{{ r.restaurant.name }}</strong>
+                                <small class="text-muted">{{ r.created_at.strftime('%m/%d/%Y') }}</small>
+                            </div>
+                            <div class="small mb-1">
+                                {% for i in range(5) %}
+                                    <i class="fas fa-star{% if i >= r.rating %}-o{% endif %}"></i>
+                                {% endfor %}
+                            </div>
+                            <div class="small text-muted mb-2">by {{ r.user.first_name }}</div>
+                            <p class="small mb-2">{{ r.comment }}</p>
+                            {% if r.owner_reply %}
+                            <div class="bg-light p-2 rounded small mb-2"><strong>Reply:</strong> {{ r.owner_reply }}</div>
+                            {% endif %}
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" placeholder="Write a reply..." data-review-id="{{ r.id }}">
+                                <button class="btn btn-outline-secondary btn-sm reply-btn" data-review-id="{{ r.id }}">Reply</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted small">No reviews yet.</div>
+                    {% endif %}
+                </div>
+            </div>
+            
             <!-- Quick Actions -->
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white border-0">
@@ -246,5 +283,28 @@ function viewOrderDetails(orderId) {
     // This would open a modal or redirect to order details
     console.log('View order details for:', orderId);
 }
+
+// Post owner replies
+$(document).on('click', '.reply-btn', function(){
+    const reviewId = $(this).data('review-id');
+    const input = $(this).closest('.input-group').find('input[type="text"]');
+    const text = (input.val() || '').trim();
+    if (!text) { showToast('error', 'Reply cannot be empty'); return; }
+    $.ajax({
+        url: '/restaurant/reply-review',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ review_id: reviewId, reply: text }),
+        success: function(resp){
+            if (resp.success) {
+                showToast('success', 'Reply posted');
+                setTimeout(function(){ location.reload(); }, 600);
+            } else {
+                showToast('error', resp.message || 'Failed to reply');
+            }
+        },
+        error: function(){ showToast('error', 'Failed to reply'); }
+    });
+});
 </script>
 {% endblock %}

@@ -242,6 +242,11 @@
                             </div>
                             <p class="small mb-1">{{ review.comment }}</p>
                             <small class="text-muted">- {{ review.user.first_name }}</small>
+                            {% if review.owner_reply %}
+                            <div class="mt-2 small text-muted">
+                                <strong>Owner Reply:</strong> {{ review.owner_reply }}
+                            </div>
+                            {% endif %}
                         </div>
                         {% endfor %}
                     {% else %}

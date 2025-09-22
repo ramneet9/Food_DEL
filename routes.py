@@ -86,30 +86,40 @@ def logout():
     return redirect(url_for('main.index'))
 
 @auth_bp.route('/reset-password', methods=['GET', 'POST'])
+@login_required
 def reset_password():
-    """Password reset functionality"""
+    """Change password using old/new/confirm for any logged-in user (customer or restaurant owner)."""
     if request.method == 'POST':
         try:
-            username = request.form.get('username')
-            email = request.form.get('email')
-            
-            if not username or not email:
+            old_password = request.form.get('old_password')
+            new_password = request.form.get('new_password')
+            confirm_password = request.form.get('confirm_password')
+
+            if not old_password or not new_password or not confirm_password:
                 flash('Please fill in all fields.', 'error')
                 return render_template('auth/reset_password.html')
-            
-            user = User.query.filter_by(username=username, email=email).first()
-            
-            if user:
-                # In a real application, you would send an email with reset link
-                flash('Password reset instructions have been sent to your email.', 'success')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('No user found with the provided credentials.', 'error')
-                
+
+            if not current_user.check_password(old_password):
+                flash('Old password is incorrect.', 'error')
+                return render_template('auth/reset_password.html')
+
+            if len(new_password) < 6:
+                flash('New password must be at least 6 characters.', 'error')
+                return render_template('auth/reset_password.html')
+
+            if new_password != confirm_password:
+                flash('New passwords do not match.', 'error')
+                return render_template('auth/reset_password.html')
+
+            current_user.set_password(new_password)
+            db.session.commit()
+            flash('Password changed successfully. Please log in again.', 'success')
+            logout_user()
+            return redirect(url_for('auth.login'))
         except Exception as e:
-            logger.error(f"Error in reset password: {e}")
-            flash('An error occurred during password reset.', 'error')
-    
+            logger.error(f"Error changing password: {e}")
+            db.session.rollback()
+            flash('An error occurred while changing password.', 'error')
     return render_template('auth/reset_password.html')
 
 # Customer blueprint
@@ -318,6 +328,66 @@ def add_to_cart():
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 
+# ---- Discount / Coupon helpers ----
+
+from typing import Tuple, Dict
+
+def _get_active_coupon() -> str:
+    return (session.get('coupon_code') or '').upper().strip()
+
+# Map coupon codes to (percentage_off, applicable_category_keywords)
+_COUPON_MAP: Dict[str, Tuple[float, Tuple[str, ...]]] = {
+    'PIZZA50': (0.50, ('pizza',)),
+    'BIRYANI30': (0.30, ('biryani',)),
+    'HEALTHY40': (0.40, ('bowl', 'healthy')),  # match bowls/healthy bowls
+    'SUSHI25': (0.25, ('sushi',)),
+}
+
+def _is_item_eligible_for_coupon(menu_item: MenuItem, coupon: str) -> bool:
+    if not coupon or coupon not in _COUPON_MAP:
+        return False
+    _, keywords = _COUPON_MAP[coupon]
+    text = f"{menu_item.category} {menu_item.name}".lower()
+    return any(k in text for k in keywords)
+
+def _discounted_unit_price(menu_item: MenuItem, coupon: str) -> float:
+    if coupon in _COUPON_MAP and _is_item_eligible_for_coupon(menu_item, coupon):
+        pct, _ = _COUPON_MAP[coupon]
+        return round(menu_item.price * (1 - pct), 2)
+    return menu_item.price
+
+# ---- Coupon endpoints ----
+
+@customer_bp.route('/apply-coupon', methods=['POST'])
+@login_required
+def apply_coupon():
+    """Apply a coupon code for the current session (customers only)."""
+    if not current_user.is_customer():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        code = (request.json.get('code') or '').upper().strip()
+        if code and code not in _COUPON_MAP:
+            return jsonify({'success': False, 'message': 'Invalid coupon code'})
+        session['coupon_code'] = code
+        # Recompute totals
+        cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
+        subtotal = sum(item.quantity * item.menu_item.price for item in cart_items)
+        coupon = _get_active_coupon()
+        discounted_total = sum(
+            item.quantity * _discounted_unit_price(item.menu_item, coupon) for item in cart_items
+        )
+        total_discount = round(subtotal - discounted_total, 2)
+        return jsonify({
+            'success': True,
+            'message': 'Coupon applied' if code else 'Coupon cleared',
+            'subtotal': subtotal,
+            'discount': total_discount,
+            'total': discounted_total
+        })
+    except Exception as e:
+        logger.error(f"Error applying coupon: {e}")
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
 @customer_bp.route('/cart')
 @login_required
 def cart():
@@ -325,13 +395,20 @@ def cart():
     if not current_user.is_customer():
         flash('Access denied. Customer access required.', 'error')
         return redirect(url_for('main.index'))
-    
+
     try:
         cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
-        total_amount = sum(item.quantity * item.menu_item.price for item in cart_items)
-        
+        coupon = _get_active_coupon()
+        subtotal = sum(item.quantity * item.menu_item.price for item in cart_items)
+        discounted_total = sum(
+            item.quantity * _discounted_unit_price(item.menu_item, coupon) for item in cart_items
+        )
+        total_amount = discounted_total
         return render_template('customer/cart.html',
                              cart_items=cart_items,
+                             subtotal_amount=subtotal,
+                             total_discount=round(subtotal - discounted_total, 2),
+                             applied_coupon=coupon,
                              total_amount=total_amount)
     except Exception as e:
         logger.error(f"Error in cart view: {e}")
@@ -344,36 +421,40 @@ def remove_from_cart():
     """Remove item from cart"""
     if not current_user.is_customer():
         return jsonify({'success': False, 'message': 'Access denied'})
-    
+
     try:
         cart_item_id = request.json.get('cart_item_id')
-        
+
         if not cart_item_id:
             return jsonify({'success': False, 'message': 'Invalid cart item'})
-        
+
         cart_item = Cart.query.filter_by(
             id=cart_item_id,
             customer_id=current_user.id
         ).first()
-        
+
         if cart_item:
             db.session.delete(cart_item)
             db.session.commit()
-            
-            # Get updated cart count and total
+
+            # Get updated cart count and totals considering coupon
             cart_count = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar() or 0
             cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
-            total_amount = sum(item.quantity * item.menu_item.price for item in cart_items)
-            
+            coupon = _get_active_coupon()
+            subtotal = sum(item.quantity * item.menu_item.price for item in cart_items)
+            discounted_total = sum(item.quantity * _discounted_unit_price(item.menu_item, coupon) for item in cart_items)
+
             return jsonify({
                 'success': True,
                 'message': 'Item removed from cart',
                 'cart_count': cart_count,
-                'total_amount': total_amount
+                'subtotal_amount': subtotal,
+                'total_amount': discounted_total,
+                'discount_amount': round(subtotal - discounted_total, 2)
             })
         else:
             return jsonify({'success': False, 'message': 'Item not found in cart'})
-            
+
     except Exception as e:
         logger.error(f"Error removing from cart: {e}")
         db.session.rollback()
@@ -395,17 +476,24 @@ def update_cart_quantity():
             return jsonify({'success': False, 'message': 'Cart item not found'})
         cart_item.quantity = int(quantity)
         db.session.commit()
-        # recompute totals
+        # recompute totals with coupon
         cart_count = db.session.query(db.func.coalesce(db.func.sum(Cart.quantity), 0)).filter(Cart.customer_id == current_user.id).scalar() or 0
         cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
-        total_amount = sum(item.quantity * item.menu_item.price for item in cart_items)
-        line_total = cart_item.quantity * cart_item.menu_item.price
+        coupon = _get_active_coupon()
+        subtotal = sum(item.quantity * item.menu_item.price for item in cart_items)
+        discounted_total = sum(item.quantity * _discounted_unit_price(item.menu_item, coupon) for item in cart_items)
+        # line totals
+        unit_price = _discounted_unit_price(cart_item.menu_item, coupon)
+        line_total = cart_item.quantity * unit_price
         return jsonify({
             'success': True,
             'message': 'Cart updated',
             'cart_count': int(cart_count),
-            'total_amount': total_amount,
-            'line_total': line_total
+            'subtotal_amount': subtotal,
+            'total_amount': discounted_total,
+            'discount_amount': round(subtotal - discounted_total, 2),
+            'line_total': line_total,
+            'line_unit_price': unit_price
         })
     except Exception as e:
         logger.error(f"Error updating cart quantity: {e}")
@@ -418,13 +506,14 @@ def place_order():
     """Place order"""
     if not current_user.is_customer():
         return jsonify({'success': False, 'message': 'Access denied'})
-    
+
     try:
         cart_items = Cart.query.filter_by(customer_id=current_user.id).all()
-        
+
         if not cart_items:
             return jsonify({'success': False, 'message': 'Cart is empty'})
-        
+
+        coupon = _get_active_coupon()
         # Group items by restaurant
         restaurant_items = {}
         for item in cart_items:
@@ -432,52 +521,57 @@ def place_order():
             if restaurant_id not in restaurant_items:
                 restaurant_items[restaurant_id] = []
             restaurant_items[restaurant_id].append(item)
-        
+
         # Create orders for each restaurant
         orders = []
         for restaurant_id, items in restaurant_items.items():
             # Generate order number
             order_number = f"ORD{datetime.now().strftime('%Y%m%d%H%M%S')}{current_user.id}{restaurant_id}"
-            
-            # Calculate total
-            total_amount = sum(item.quantity * item.menu_item.price for item in items)
-            
+
+            # Calculate total using discounted unit prices
+            total_amount = 0.0
+            for item in items:
+                unit = _discounted_unit_price(item.menu_item, coupon)
+                total_amount += item.quantity * unit
+
             # Create order
             order = Order(
                 order_number=order_number,
-                total_amount=total_amount,
+                total_amount=round(total_amount, 2),
                 customer_id=current_user.id,
                 restaurant_id=restaurant_id
             )
             db.session.add(order)
             db.session.flush()  # Get order ID
-            
-            # Create order items
+
+            # Create order items using discounted unit price
             for item in items:
+                unit = _discounted_unit_price(item.menu_item, coupon)
                 order_item = OrderItem(
                     order_id=order.id,
                     menu_item_id=item.menu_item_id,
                     quantity=item.quantity,
-                    price=item.menu_item.price
+                    price=unit
                 )
                 db.session.add(order_item)
-                
+
                 # Update menu item order count
                 item.menu_item.order_count += item.quantity
-            
+
             orders.append(order)
-        
-        # Clear cart
+
+        # Clear cart and coupon
         Cart.query.filter_by(customer_id=current_user.id).delete()
-        
+        session['coupon_code'] = ''
+
         db.session.commit()
-        
+
         return jsonify({
             'success': True,
             'message': f'Order placed successfully! Order number: {orders[0].order_number}',
             'order_number': orders[0].order_number
         })
-        
+
     except Exception as e:
         logger.error(f"Error placing order: {e}")
         db.session.rollback()
@@ -651,11 +745,16 @@ def dashboard():
         pending_orders = Order.query.filter(Order.restaurant_id.in_(restaurant_ids),
                                           Order.status == 'pending').count()
         
+        # Get recent reviews (last 5)
+        recent_reviews = Review.query.filter(Review.restaurant_id.in_(restaurant_ids))\
+                                     .order_by(Review.created_at.desc()).limit(5).all()
+        
         return render_template('restaurant/dashboard.html',
                              restaurants=restaurants,
                              recent_orders=recent_orders,
                              total_orders=total_orders,
-                             pending_orders=pending_orders)
+                             pending_orders=pending_orders,
+                             recent_reviews=recent_reviews)
     except Exception as e:
         logger.error(f"Error in restaurant dashboard: {e}")
         flash('An error occurred while loading the dashboard.', 'error')
@@ -996,6 +1095,52 @@ def add_review():
         return jsonify({'success': True, 'message': 'Review added successfully'})
     except Exception as e:
         logger.error(f"Error adding review: {e}")
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
+
+@restaurant_bp.route('/reviews')
+@login_required
+def owner_reviews():
+    """List reviews for all restaurants owned by the current owner."""
+    if not current_user.is_restaurant_owner():
+        flash('Access denied. Restaurant owner access required.', 'error')
+        return redirect(url_for('main.index'))
+    try:
+        restaurants = Restaurant.query.filter_by(owner_id=current_user.id).all()
+        restaurant_ids = [r.id for r in restaurants]
+        reviews = Review.query.filter(Review.restaurant_id.in_(restaurant_ids)).order_by(Review.created_at.desc()).all()
+        return render_template('restaurant/orders.html', reviews=reviews, restaurants=restaurants)
+    except Exception as e:
+        logger.error(f"Error loading owner reviews: {e}")
+        flash('An error occurred while loading reviews.', 'error')
+        return redirect(url_for('restaurant.dashboard'))
+
+@restaurant_bp.route('/reply-review', methods=['POST'])
+@login_required
+def reply_review():
+    """Reply to a review as the restaurant owner."""
+    if not current_user.is_restaurant_owner():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        data = request.get_json(silent=True) or {}
+        review_id = data.get('review_id')
+        reply_text = (data.get('reply') or '').strip()
+        if not review_id or not reply_text:
+            return jsonify({'success': False, 'message': 'Invalid data'})
+        review = Review.query.get(review_id)
+        if not review:
+            return jsonify({'success': False, 'message': 'Review not found'})
+        # Verify ownership of the restaurant being reviewed
+        restaurant = Restaurant.query.filter_by(id=review.restaurant_id, owner_id=current_user.id).first()
+        if not restaurant:
+            return jsonify({'success': False, 'message': 'Not authorized to reply to this review'})
+        # Add/Update reply fields
+        setattr(review, 'owner_reply', reply_text)
+        setattr(review, 'owner_reply_at', datetime.utcnow())
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Reply posted'})
+    except Exception as e:
+        logger.error(f"Error replying to review: {e}")
         db.session.rollback()
         return jsonify({'success': False, 'message': 'An error occurred'})
 

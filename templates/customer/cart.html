@@ -33,6 +33,10 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+
+.price-old { text-decoration: line-through; color: #888; margin-right: 6px; }
+.price-new { color: #85AA4A; font-weight: 600; }
+.coupon-row small { cursor: pointer; }
 </style>
 {% endblock %}
 
@@ -60,7 +64,25 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    {% set coupon = applied_coupon or '' %}
                     {% for item in cart_items %}
+                    {% set unit = item.menu_item.price %}
+                    {% set eligible = False %}
+                    {% if coupon %}
+                        {% set name_lower = (item.menu_item.name ~ ' ' ~ item.menu_item.category)|lower %}
+                        {% if coupon == 'PIZZA50' and 'pizza' in name_lower %}{% set eligible = True %}{% endif %}
+                        {% if coupon == 'BIRYANI30' and 'biryani' in name_lower %}{% set eligible = True %}{% endif %}
+                        {% if coupon == 'HEALTHY40' and ('bowl' in name_lower or 'healthy' in name_lower) %}{% set eligible = True %}{% endif %}
+                        {% if coupon == 'SUSHI25' and 'sushi' in name_lower %}{% set eligible = True %}{% endif %}
+                    {% endif %}
+                    {% if eligible %}
+                        {% if coupon == 'PIZZA50' %}{% set unit_disc = (unit * 0.5) %}{% endif %}
+                        {% if coupon == 'BIRYANI30' %}{% set unit_disc = (unit * 0.7) %}{% endif %}
+                        {% if coupon == 'HEALTHY40' %}{% set unit_disc = (unit * 0.6) %}{% endif %}
+                        {% if coupon == 'SUSHI25' %}{% set unit_disc = (unit * 0.75) %}{% endif %}
+                    {% else %}
+                        {% set unit_disc = unit %}
+                    {% endif %}
                     <div class="cart-item">
                         <div class="row align-items-center">
                             <div class="col-md-6">
@@ -83,10 +105,16 @@
                                 </div>
                             </div>
                             <div class="col-md-2 text-center">
-                                <span class="fw-bold price-per-unit" data-unit="{{ '%.2f'|format(item.menu_item.price) }}">₹{{ "%.2f"|format(item.menu_item.price) }}</span>
+                                {% if unit_disc < unit %}
+                                    <span class="price-old">₹{{ "%.2f"|format(unit) }}</span>
+                                    <span class="price-new price-per-unit" data-unit="{{ '%.2f'|format(unit_disc) }}">₹{{ "%.2f"|format(unit_disc) }}</span>
+                                {% else %}
+                                    <span class="fw-bold price-per-unit" data-unit="{{ '%.2f'|format(unit) }}">₹{{ "%.2f"|format(unit) }}</span>
+                                {% endif %}
                             </div>
                             <div class="col-md-2 text-center">
-                                <span class="fw-bold line-total" style="color: #85AA4A;">₹{{ "%.2f"|format(item.quantity * item.menu_item.price) }}</span>
+                                {% set line_total = item.quantity * unit_disc %}
+                                <span class="fw-bold line-total" style="color: #85AA4A;">₹{{ "%.2f"|format(line_total) }}</span>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -112,9 +140,23 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    <div class="coupon-row d-flex gap-2 mb-3">
+                        <input type="text" class="form-control form-control-sm" id="coupon-input" placeholder="Apply coupon (e.g., PIZZA50)" value="{{ applied_coupon or '' }}">
+                        <button class="btn btn-sm btn-outline-secondary" id="apply-coupon-btn">Apply</button>
+                        {% if applied_coupon %}
+                        <button class="btn btn-sm btn-outline-danger" id="clear-coupon-btn">Clear</button>
+                        {% endif %}
+                    </div>
+                    {% if applied_coupon %}
+                    <div class="mb-2 text-success small">Applied: <strong>{{ applied_coupon }}</strong></div>
+                    {% endif %}
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal:</span>
-                        <span id="cart-subtotal">₹{{ "%.2f"|format(total_amount) }}</span>
+                        <span id="cart-subtotal">₹{{ "%.2f"|format(subtotal_amount if subtotal_amount is defined else total_amount) }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Discount:</span>
+                        <span id="cart-discount">-₹{{ "%.2f"|format(total_discount if total_discount is defined else 0) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Tax:</span>
@@ -174,4 +216,49 @@
     {% endif %}
 </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).on('click', '#apply-coupon-btn', function() {
+    const code = $('#coupon-input').val().trim();
+    $.ajax({
+        url: '/customer/apply-coupon',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ code: code }),
+        success: function(resp) {
+            if (resp.success) {
+                updateCartSummary(resp.subtotal, resp.discount, resp.total);
+                showToast('success', resp.message);
+                setTimeout(function(){ location.reload(); }, 500);
+            } else {
+                showToast('error', resp.message);
+            }
+        },
+        error: function() { showToast('error', 'Failed to apply coupon'); }
+    });
+});
+$(document).on('click', '#clear-coupon-btn', function() {
+    $.ajax({
+        url: '/customer/apply-coupon',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ code: '' }),
+        success: function(resp) {
+            if (resp.success) {
+                updateCartSummary(resp.subtotal, resp.discount, resp.total);
+                showToast('success', resp.message);
+                setTimeout(function(){ location.reload(); }, 500);
+            } else { showToast('error', resp.message); }
+        },
+        error: function(){ showToast('error', 'Failed to clear coupon'); }
+    });
+});
+function updateCartSummary(subtotal, discount, total) {
+    $('#cart-subtotal').text(formatCurrency(subtotal));
+    $('#cart-discount').text('-' + formatCurrency(discount).replace('₹','₹'));
+    $('#cart-total').text(formatCurrency(total));
+}
+</script>
 {% endblock %}

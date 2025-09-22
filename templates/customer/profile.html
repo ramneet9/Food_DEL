@@ -187,6 +187,12 @@
                         <strong>Account Type:</strong>
                         <p class="text-muted mb-0">{{ current_user.role.title() }}</p>
                     </div>
+                    <hr>
+                    <div class="d-grid">
+                        <a href="{{ url_for('auth.reset_password') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-key me-1"></i>Change Password
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

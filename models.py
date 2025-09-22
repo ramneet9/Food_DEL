@@ -187,6 +187,9 @@ class Review(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurants.id'), nullable=True)
     menu_item_id = db.Column(db.Integer, db.ForeignKey('menu_items.id'), nullable=True)
+    # Owner reply fields
+    owner_reply = db.Column(db.Text)
+    owner_reply_at = db.Column(db.DateTime)
     
     def __repr__(self):
         return f'<Review {self.rating} stars>'
