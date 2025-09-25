@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 
 # Import models and routes
 from models import User, Restaurant, MenuItem, Order, OrderItem, Cart, UserPreference, Review
-from routes import auth_bp, customer_bp, restaurant_bp, main_bp
+from blueprints import auth_bp, customer_bp, restaurant_bp, main_bp
 
 # Register blueprints
 app.register_blueprint(main_bp)

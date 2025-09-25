@@ -12,7 +12,7 @@
     background-position: center;
     background-attachment: fixed;
     margin: -20px -15px;
-    padding: 20px 15px;
+    padding: 96px 15px 15px 15px;
 }
 
 .page-background::before {
@@ -37,6 +37,8 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+/* Remove extra gap below fixed navbar on this page */
+.navbar-spacer { height: 0 !important; }
 </style>
 {% endblock %}
 

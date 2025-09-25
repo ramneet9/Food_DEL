@@ -7,7 +7,7 @@
 .page-background {
     position: relative;
     margin: -20px -15px 0 -15px;
-    padding: 20px 15px 0 15px;
+    padding: 96px 15px 0 15px;
     min-height: 100vh;
 }
 
@@ -18,7 +18,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.75);
     z-index: 1;
 }
 
@@ -33,6 +33,19 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+/* Headings in owner pages should be black */
+.page-background h1,
+.page-background h2,
+.page-background h3,
+.page-background h4,
+.page-background h5,
+.page-background h6 { color: #000 !important; }
+/* Ensure restaurant names/titles on cards remain white */
+.page-background .card .card-title,
+.page-background .card h5,
+.page-background .card h6 { color: #fff !important; }
+/* Remove extra gap below fixed navbar on this page */
+.navbar-spacer { height: 0 !important; }
 </style>
 {% endblock %}
 

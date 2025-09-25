@@ -428,12 +428,16 @@ $(document).ready(function() {
         
         // Close dropdown
         $('.dropdown-menu').removeClass('show');
+
+        // Reorder restaurants if on listing page
+        try { reorderRestaurantsByLocation(location); } catch (_) {}
     });
     
     // Load saved location on page load
     const savedLocation = localStorage.getItem('selectedLocation');
     if (savedLocation) {
         $('#selected-location').text(savedLocation);
+        try { reorderRestaurantsByLocation(savedLocation, true); } catch (_) {}
     }
     
     // Add fade-in animation to cards
@@ -468,3 +472,30 @@ $(document).ready(function() {
         }
     });
 });
+
+// Reorder restaurants by chosen location with smooth animation
+function reorderRestaurantsByLocation(location, isInitial=false) {
+    const grid = $('#restaurants-grid');
+    if (!grid.length) return;
+    const cards = grid.children('[data-location]');
+    if (!cards.length) return;
+
+    const match = [];
+    const rest = [];
+    cards.each(function() {
+        (($(this).data('location') || '').toString().toLowerCase() === (location || '').toString().toLowerCase())
+            ? match.push(this)
+            : rest.push(this);
+    });
+
+    if (!match.length) return;
+
+    if (!isInitial) grid.css('opacity', 0.0);
+
+    const fragment = $(document.createDocumentFragment());
+    $(match).each(function() { fragment.append(this); });
+    $(rest).each(function() { fragment.append(this); });
+    grid.append(fragment);
+
+    if (!isInitial) grid.animate({ opacity: 1.0 }, 200);
+}

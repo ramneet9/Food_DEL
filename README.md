@@ -17,8 +17,8 @@ python app.py
 ```
 
 **Demo Accounts:**
-- **Customer:** `john_doe` / `password123`
-- **Restaurant Owner:** `chef_mario` / `password123`
+- **Customers:** `ramneet` / `ramneet`, `batman` / `batman`
+- **Restaurant Owners:** `chef_mario` / `mario`, `chef_raj` / `raj`
 
 For detailed setup instructions, see [SETUP.md](SETUP.md)
 
@@ -125,13 +125,12 @@ The application will be available at `http://localhost:5000`
 
 ## Demo Accounts
 
-### Customer Account
-- **Username**: `john_doe`
-- **Password**: `password123`
+See the demo accounts listed at the top of this README under Quick Setup.
 
-### Restaurant Owner Account
-- **Username**: `chef_mario`
-- **Password**: `password123`
+If you updated `seed_data.py` and want to sync changes into an existing DB, run:
+```bash
+py -3 -c "from app import app; from seed_data import sync_all_data; app.app_context().push(); sync_all_data()"
+```
 
 ## Testing
 
@@ -151,24 +150,31 @@ The test suite includes:
 
 ```
 food-ordering-app/
-├── app.py                 # Main Flask application
-├── models.py              # Database models
-├── routes.py              # Route blueprints
-├── seed_data.py           # Database seeding
-├── tests.py               # Unit tests
-├── requirements.txt       # Python dependencies
-├── README.md             # This file
-├── templates/            # Jinja2 templates
-│   ├── base.html         # Base template
-│   ├── index.html        # Home page
-│   ├── auth/             # Authentication templates
-│   ├── customer/         # Customer templates
-│   ├── restaurant/       # Restaurant owner templates
-│   └── errors/           # Error pages
-└── static/               # Static files
-    ├── css/              # Stylesheets
-    ├── js/               # JavaScript files
-    └── images/           # Images
+├── app.py                  # Main Flask application (registers blueprints)
+├── models.py               # Database models
+├── blueprints/             # Modular route groups
+│   ├── __init__.py         # Exports main/auth/customer/restaurant blueprints
+│   ├── main.py             # Public home routes
+│   ├── auth.py             # Authentication routes
+│   ├── customer.py         # Customer routes & APIs
+│   └── restaurant.py       # Restaurant owner routes & APIs
+├── seed_data.py            # Database seeding and idempotent sync
+├── tests.py                # Unit tests
+├── requirements.txt        # Python dependencies
+├── README.md               # This file
+├── README_VIVA.md          # Viva/demo cheat sheet
+├── README_DEEP_DIVE.md     # In-depth architecture guide
+├── templates/              # Jinja2 templates
+│   ├── base.html           # Base template
+│   ├── index.html          # Home page
+│   ├── auth/               # Authentication templates
+│   ├── customer/           # Customer templates
+│   ├── restaurant/         # Restaurant owner templates
+│   └── errors/             # Error pages
+└── static/                 # Static files
+    ├── css/                # Stylesheets
+    ├── js/                 # JavaScript files
+    └── images/             # Images
 ```
 
 ## Key Features Implementation

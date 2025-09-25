@@ -7,7 +7,7 @@
 .page-background {
     position: relative;
     margin: -20px -15px 0 -15px;
-    padding: 20px 15px 0 15px;
+    padding: 96px 15px 0 15px;
     min-height: 100vh;
 }
 
@@ -37,6 +37,8 @@
 .price-old { text-decoration: line-through; color: #888; margin-right: 6px; }
 .price-new { color: #85AA4A; font-weight: 600; }
 .coupon-row small { cursor: pointer; }
+/* Remove extra gap below fixed navbar on this page */
+.navbar-spacer { height: 0 !important; }
 </style>
 {% endblock %}
 

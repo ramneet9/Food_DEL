@@ -2,7 +2,7 @@
 
 ## Quick Setup (Recommended)
 
-### Option A: Fresh Install (New Device)
+### Fresh Install / Reset (New or Existing Device)
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
@@ -14,31 +14,21 @@ python setup_fresh.py
 python app.py
 ```
 
-### Option B: Interactive Setup (Existing Device)
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
-
-# 2. Run interactive setup script
-python setup.py
-
-# 3. Start the application
-python app.py
-```
-
 The application will be available at: `http://localhost:5000`
 
 ---
 
-## Manual Setup (Alternative)
 
-### 1. Install Dependencies
+## Optional: Manual Setup
+
+If you prefer manual steps instead of the fresh script:
+
+1) Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Set Environment Variables
-Create a `.env` file in the project root:
+2) Create a `.env` file in the project root
 ```env
 FLASK_APP=app.py
 FLASK_ENV=development
@@ -46,20 +36,7 @@ SECRET_KEY=your-secret-key-here
 DATABASE_URL=sqlite:///instance/food_ordering.db
 ```
 
-### 3. Initialize Database
-```bash
-# Create database tables
-flask db init
-flask db migrate -m "Initial migration"
-flask db upgrade
-```
-
-### 4. Seed Database
-```bash
-python seed_data.py
-```
-
-### 5. Start Application
+3) First run (creates tables and seeds automatically)
 ```bash
 python app.py
 ```
@@ -70,13 +47,13 @@ python app.py
 
 After setup, you can use these demo accounts:
 
-### Customer Account
-- **Username:** `john_doe`
-- **Password:** `password123`
+### Customer Accounts
+- **Username:** `ramneet` — **Password:** `ramneet`
+- **Username:** `batman` — **Password:** `batman`
 
-### Restaurant Owner Account
-- **Username:** `chef_mario`
-- **Password:** `password123`
+### Restaurant Owner Accounts
+- **Username:** `chef_mario` — **Password:** `mario`
+- **Username:** `chef_raj` — **Password:** `raj`
 
 ---
 
@@ -108,10 +85,15 @@ After setup, you can use these demo accounts:
 ## Troubleshooting
 
 ### Database Issues
-If you encounter database issues, you can reset the database:
+If you encounter database issues and want a clean slate:
 ```bash
-python setup.py
-# Choose 'y' when prompted to reset
+# Fresh reset (drops and recreates, then seeds)
+python setup_fresh.py
+```
+
+If you modified `seed_data.py` and want to sync changes into an existing DB (no destructive reset):
+```bash
+py -3 -c "from app import app; from seed_data import sync_all_data; app.app_context().push(); sync_all_data()"
 ```
 
 ### Port Already in Use
@@ -122,7 +104,7 @@ if __name__ == '__main__':
 ```
 
 ### Missing Images
-Make sure the `static/images/` directory contains all the restaurant images:
+Make sure the `static/images/` directory contains restaurant images:
 - `static/images/restaurants/` - Restaurant photos
 - `static/images/header-bg.jpg` - Background image
 
@@ -132,16 +114,16 @@ Make sure the `static/images/` directory contains all the restaurant images:
 
 ```
 EXIT_TEST/
-├── app.py                 # Main application file
-├── models.py              # Database models
-├── routes.py              # Application routes
-├── config.py              # Configuration
-├── seed_data.py           # Database seeding
-├── setup.py               # Setup script
-├── requirements.txt       # Python dependencies
-├── static/                # Static files (CSS, JS, images)
-├── templates/             # HTML templates
-└── instance/              # Database files
+├── app.py                  # Main application (registers blueprints)
+├── models.py               # Database models
+├── blueprints/             # Modular routes (main, auth, customer, restaurant)
+├── config.py               # Configuration
+├── seed_data.py            # Seeding and idempotent sync helpers
+├── setup_fresh.py          # Fresh setup/reset script
+├── requirements.txt        # Python dependencies
+├── static/                 # Static files (CSS, JS, images)
+├── templates/              # HTML templates
+└── instance/               # Database files (SQLite)
 ```
 
 ---
