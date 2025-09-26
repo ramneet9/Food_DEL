@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
+import os
 
 from flask import (
     Blueprint,
@@ -328,4 +329,36 @@ def owner_reviews():
         flash('An error occurred while loading reviews.', 'error')
         return redirect(url_for('restaurant.dashboard'))
 
+
+
+@restaurant_bp.route('/reply-review', methods=['POST'])
+@login_required
+def reply_review():
+    """Allow restaurant owners to reply to a review for their restaurant."""
+    if not current_user.is_restaurant_owner():
+        return jsonify({'success': False, 'message': 'Access denied'})
+    try:
+        data = request.get_json(silent=True) or {}
+        review_id = data.get('review_id')
+        reply_text = (data.get('reply') or '').strip()
+        if not review_id or not reply_text:
+            return jsonify({'success': False, 'message': 'Invalid reply data'})
+
+        # Ensure the review exists and belongs to one of the owner's restaurants
+        review = (
+            Review.query.join(Restaurant, Review.restaurant_id == Restaurant.id)
+            .filter(Review.id == review_id, Restaurant.owner_id == current_user.id)
+            .first()
+        )
+        if not review:
+            return jsonify({'success': False, 'message': 'Review not found'})
+
+        review.owner_reply = reply_text
+        review.owner_reply_at = datetime.utcnow()
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Reply posted'})
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Error replying to review: %s", exc)
+        db.session.rollback()
+        return jsonify({'success': False, 'message': 'An error occurred'})
 
