@@ -459,3 +459,393 @@
 2025-09-26 12:29:36,481 INFO __main__ Database seeded successfully
 2025-09-26 12:29:36,490 WARNING werkzeug  * Debugger is active!
 2025-09-26 12:29:36,496 INFO werkzeug  * Debugger PIN: 276-266-729
+2025-09-27 16:26:56,083 INFO __main__ Database tables created successfully
+2025-09-27 16:26:56,120 INFO __main__ Database seeded successfully
+2025-09-27 16:26:56,155 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.207:5000
+2025-09-27 16:26:56,156 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-09-27 16:26:56,158 INFO werkzeug  * Restarting with stat
+2025-09-27 16:26:56,932 INFO __main__ Database tables created successfully
+2025-09-27 16:26:56,963 INFO __main__ Database seeded successfully
+2025-09-27 16:26:56,972 WARNING werkzeug  * Debugger is active!
+2025-09-27 16:26:56,978 INFO werkzeug  * Debugger PIN: 276-266-729
+2025-09-27 16:27:08,033 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:08] "GET / HTTP/1.1" 200 -
+2025-09-27 16:27:09,083 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,101 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,102 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,107 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,124 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,130 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,138 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,159 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,178 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,186 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,200 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,209 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,210 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,227 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,233 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,245 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,276 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,285 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:09,290 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:09] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:15,647 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:15] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2025-09-27 16:27:15,679 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:15] "GET /customer/dashboard HTTP/1.1" 200 -
+2025-09-27 16:27:15,726 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:15] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-27 16:27:15,728 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:15] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-27 16:27:15,754 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:15] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,061 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-27 16:27:18,098 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,101 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,119 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,122 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,128 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,129 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,132 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,135 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,144 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,172 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:18,172 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:18] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:19,621 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:19] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-27 16:27:19,660 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-27 16:27:19,668 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:19] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-27 16:27:19,695 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:19] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:19,695 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:19] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,490 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[32mGET /auth/logout HTTP/1.1[0m" 302 -
+2025-09-27 16:27:35,500 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "GET / HTTP/1.1" 200 -
+2025-09-27 16:27:35,703 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,703 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,704 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,704 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,705 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,707 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,714 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,718 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,722 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,732 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,733 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,735 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,749 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,752 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,753 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,756 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,773 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,788 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-27 16:27:35,790 INFO werkzeug 127.0.0.1 - - [27/Sep/2025 16:27:35] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:03,817 INFO __main__ Database tables created successfully
+2025-09-28 19:46:03,848 INFO __main__ Database seeded successfully
+2025-09-28 19:46:03,874 INFO werkzeug [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.207:5000
+2025-09-28 19:46:03,874 INFO werkzeug [33mPress CTRL+C to quit[0m
+2025-09-28 19:46:03,876 INFO werkzeug  * Restarting with stat
+2025-09-28 19:46:04,503 INFO __main__ Database tables created successfully
+2025-09-28 19:46:04,537 INFO __main__ Database seeded successfully
+2025-09-28 19:46:04,548 WARNING werkzeug  * Debugger is active!
+2025-09-28 19:46:04,555 INFO werkzeug  * Debugger PIN: 276-266-729
+2025-09-28 19:46:07,071 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:07] "GET / HTTP/1.1" 200 -
+2025-09-28 19:46:08,113 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,171 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,171 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,260 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,265 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,304 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,311 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,356 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,364 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,370 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,403 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,406 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,608 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,622 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,654 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,672 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,684 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,720 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:08,769 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:08] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:13,374 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:13] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2025-09-28 19:46:13,414 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:13] "GET /customer/dashboard HTTP/1.1" 200 -
+2025-09-28 19:46:13,473 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:13,477 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:13] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:13,509 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:13] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,849 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-28 19:46:14,901 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,904 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,924 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,933 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,934 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,940 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,943 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,945 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:14,953 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:14] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:15,003 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:15] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:15,009 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:15] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:16,304 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:16] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:46:16,365 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:16,367 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:16] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:16,387 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:16] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:16,387 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:16] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:19,498 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:19] "POST /customer/add-to-cart HTTP/1.1" 200 -
+2025-09-28 19:46:20,436 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:20] "GET /customer/cart HTTP/1.1" 200 -
+2025-09-28 19:46:20,478 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:20,484 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:20] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:20,501 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:20] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:24,015 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:24] "POST /customer/place-order HTTP/1.1" 200 -
+2025-09-28 19:46:26,069 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:26] "GET /customer/orders HTTP/1.1" 200 -
+2025-09-28 19:46:26,119 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:26] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:26,120 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:26] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:26,139 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:26] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:50,012 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:50] "GET /customer/cart HTTP/1.1" 200 -
+2025-09-28 19:46:50,054 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:50,059 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:50,075 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:50] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:52,252 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:52] "GET /customer/orders HTTP/1.1" 200 -
+2025-09-28 19:46:52,293 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:52] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:52,298 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:52] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:52,319 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:52] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,360 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-28 19:46:53,411 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,417 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,440 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,441 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,445 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,465 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,477 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,486 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,489 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,501 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:53,506 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:53] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:57,152 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:57] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:46:57,202 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:46:57,204 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:57] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:46:57,226 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:57] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:46:57,227 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:46:57] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,450 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:48:54,495 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,502 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,523 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,523 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,639 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:48:54,655 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:54] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,303 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "GET / HTTP/1.1" 200 -
+2025-09-28 19:48:59,352 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,361 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,362 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,364 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,365 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,375 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,377 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,381 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,384 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,392 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,393 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,402 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,403 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,437 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,455 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,463 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,469 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,474 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:48:59,475 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:48:59] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,627 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-28 19:49:00,676 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,680 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,706 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,709 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,711 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,718 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,721 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,723 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,730 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,736 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:00,738 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:00] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:01,992 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:01] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:49:02,043 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:02] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:02,049 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:02] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:02,066 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:02] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:02,067 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:02] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:32,801 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:32] "POST /customer/add-to-cart HTTP/1.1" 200 -
+2025-09-28 19:49:33,693 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:33] "GET /customer/cart HTTP/1.1" 200 -
+2025-09-28 19:49:33,751 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:33,755 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:33] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:33,773 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:33] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:36,451 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:36] "POST /customer/place-order HTTP/1.1" 200 -
+2025-09-28 19:49:38,483 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:38] "GET /customer/orders HTTP/1.1" 200 -
+2025-09-28 19:49:38,527 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:38,534 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:38] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:38,578 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:38] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,314 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-28 19:49:39,362 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,363 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,379 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,387 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,389 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,401 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,412 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,438 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,441 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,442 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:39,452 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:39] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:40,306 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:40] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:49:40,351 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:40] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:40,356 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:40] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:40,385 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:40] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:40,386 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:40] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,471 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[32mGET /auth/logout HTTP/1.1[0m" 302 -
+2025-09-28 19:49:46,480 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "GET / HTTP/1.1" 200 -
+2025-09-28 19:49:46,536 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,539 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,542 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,545 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,558 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,561 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,570 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,578 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,605 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,611 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,615 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,625 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,628 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,638 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,641 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,644 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,647 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,656 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:46,656 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:46] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,250 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2025-09-28 19:49:50,292 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "GET /restaurant/dashboard HTTP/1.1" 200 -
+2025-09-28 19:49:50,351 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,354 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,373 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,384 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,385 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,386 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:50,387 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:50] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:53,384 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:53] "POST /restaurant/update-order-status HTTP/1.1" 200 -
+2025-09-28 19:49:54,344 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:54] "POST /restaurant/update-order-status HTTP/1.1" 200 -
+2025-09-28 19:49:56,621 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "GET /restaurant/restaurants HTTP/1.1" 200 -
+2025-09-28 19:49:56,662 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,669 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,692 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,695 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,698 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,701 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:56,704 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:56] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:49:58,795 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:58] "GET /restaurant/restaurant/3/menu HTTP/1.1" 200 -
+2025-09-28 19:49:58,840 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:58] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:49:58,841 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:58] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:49:58,874 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:49:58] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:18,970 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:18] "[32mGET /auth/logout HTTP/1.1[0m" 302 -
+2025-09-28 19:50:18,979 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:18] "GET / HTTP/1.1" 200 -
+2025-09-28 19:50:19,041 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,050 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,052 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,054 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,059 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,061 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,067 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,069 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,075 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,075 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,076 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,091 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,110 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,118 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,126 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,128 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,134 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,140 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:19,143 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:19] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:22,683 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:22] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2025-09-28 19:50:22,695 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:22] "GET /customer/dashboard HTTP/1.1" 200 -
+2025-09-28 19:50:22,750 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:50:22,756 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:22] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:50:22,776 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:22] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,385 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "GET /customer/restaurants HTTP/1.1" 200 -
+2025-09-28 19:50:24,434 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,438 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,457 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,461 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,471 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,474 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,477 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,481 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,513 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,519 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:24,524 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:24] "[36mGET /static/images/restaurants/taco.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:25,639 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:25] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:50:25,694 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:50:25,697 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:25] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:50:25,724 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:25] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:25,725 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:50:25] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:50:45,920 INFO werkzeug  * Detected change in 'D:\\EXIT_TEST\\models.py', reloading
+2025-09-28 19:50:46,106 INFO werkzeug  * Restarting with stat
+2025-09-28 19:50:46,954 INFO __main__ Database tables created successfully
+2025-09-28 19:50:46,992 INFO __main__ Database seeded successfully
+2025-09-28 19:50:47,002 WARNING werkzeug  * Debugger is active!
+2025-09-28 19:50:47,010 INFO werkzeug  * Debugger PIN: 276-266-729
+2025-09-28 19:51:05,502 INFO werkzeug  * Detected change in 'D:\\EXIT_TEST\\models.py', reloading
+2025-09-28 19:51:05,656 INFO werkzeug  * Restarting with stat
+2025-09-28 19:51:06,420 INFO __main__ Database tables created successfully
+2025-09-28 19:51:06,447 INFO __main__ Database seeded successfully
+2025-09-28 19:51:06,457 WARNING werkzeug  * Debugger is active!
+2025-09-28 19:51:06,464 INFO werkzeug  * Debugger PIN: 276-266-729
+2025-09-28 19:51:15,395 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:51:15,547 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:51:15,552 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:51:15,563 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:15,563 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:15,624 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:15,637 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:15] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:33,716 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:33] "POST /customer/add-review HTTP/1.1" 200 -
+2025-09-28 19:51:35,145 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "GET /customer/restaurant/3 HTTP/1.1" 200 -
+2025-09-28 19:51:35,200 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:51:35,204 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:51:35,222 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:35,224 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:35,318 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:35,340 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:35] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,128 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[32mGET /auth/logout HTTP/1.1[0m" 302 -
+2025-09-28 19:51:37,162 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "GET / HTTP/1.1" 200 -
+2025-09-28 19:51:37,215 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,223 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/pizza.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,229 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/biryani.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,229 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/Daily-Meal.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,237 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/bowl.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,240 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/thali.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,249 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,256 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/rolls.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,256 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/thin.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,257 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/light.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,274 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/sandwich.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,279 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/food-categories/high.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,297 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,302 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,313 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,318 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/marrio.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,321 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,330 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/burger.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:37,331 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:37] "[36mGET /static/images/restaurants/green.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,761 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[32mPOST /auth/login HTTP/1.1[0m" 302 -
+2025-09-28 19:51:40,796 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "GET /restaurant/dashboard HTTP/1.1" 200 -
+2025-09-28 19:51:40,846 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,850 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,876 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,884 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,886 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,891 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:40,892 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:40] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:48,468 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:48] "POST /restaurant/reply-review HTTP/1.1" 200 -
+2025-09-28 19:51:49,096 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "GET /restaurant/dashboard HTTP/1.1" 200 -
+2025-09-28 19:51:49,133 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,137 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,181 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/header-bg.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,185 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/restaurants/spice.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,188 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/restaurants/dragon.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,193 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/restaurants/bakery.jpg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,202 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/restaurants/sushi.jpeg HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,317 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -
+2025-09-28 19:51:49,333 INFO werkzeug 127.0.0.1 - - [28/Sep/2025 19:51:49] "[36mGET /static/images/images.png HTTP/1.1[0m" 304 -

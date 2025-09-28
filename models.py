@@ -107,7 +107,7 @@ class MenuItem(db.Model):
         today_orders = OrderItem.query.join(Order).filter(
             OrderItem.menu_item_id == self.id,
             db.func.date(Order.created_at) == today
-        ).count()
+        ).with_entities(db.func.sum(OrderItem.quantity)).scalar() or 0
         return today_orders > 10
     
     def __repr__(self):
